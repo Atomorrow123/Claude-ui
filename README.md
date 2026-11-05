@@ -6,6 +6,12 @@
 
 <p align="center">一套有明确审美立场的前端 UI 构建指南 · 适用于任何支持 Agent Skills 的 AI 编程助手</p>
 
+<p align="center">
+  <a href="https://github.com/Atomorrow123/Claude-ui">GitHub</a> ·
+  <a href="https://github.com/Atomorrow123/Claude-ui/releases">Releases</a> ·
+  作者：齐天大圣123 &amp; Claude Code
+</p>
+
 ---
 
 ## 这是什么
@@ -29,6 +35,15 @@ Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格
 ## 安装
 
 ### 方式一：安装脚本（推荐，自动识别已装的 Agent）
+
+先获取代码：
+
+```bash
+git clone https://github.com/Atomorrow123/Claude-ui.git
+cd Claude-ui
+```
+
+或从 [Releases](https://github.com/Atomorrow123/Claude-ui/releases) 下载 `claude-ui-<version>.zip` 解压。然后：
 
 ```powershell
 # Windows
@@ -63,24 +78,26 @@ Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格
 
 本仓库同时是以下格式的合法包：
 
-**Claude Code 插件市场**（仓库根目录含 `.claude-plugin/marketplace.json`）
+**Claude Code 插件市场**
 ```bash
-claude plugin marketplace add <本仓库的 git URL 或本地路径>
+claude plugin marketplace add Atomorrow123/Claude-ui
 claude plugin install claude-ui@claude-ui-marketplace
 ```
+或在 Claude Code 内：`/plugin marketplace add Atomorrow123/Claude-ui`
 
-**Gemini CLI 扩展**（根目录含 `gemini-extension.json`）
+**Gemini CLI 扩展**
 ```bash
-gemini extensions install <本仓库的 git URL 或本地路径>
-# 或只装技能：
-gemini skills install <本仓库的 git URL 或本地路径>
+gemini extensions install https://github.com/Atomorrow123/Claude-ui
 ```
 
-**Antigravity 插件**（根目录含 `plugin.json`）
-将整个文件夹复制到 `~/.gemini/config/plugins/claude-ui/`，重启 Antigravity。
+**Antigravity 插件**
+```powershell
+git clone https://github.com/Atomorrow123/Claude-ui.git; cd Claude-ui; ./install.ps1 -Agent antigravity
+```
+（即复制到 `~/.gemini/config/plugins/claude-ui/`），然后重启 Antigravity。
 
 **Claude.ai / Claude 桌面版**
-在 *Settings → Capabilities → Skills* 上传 `dist/claude-ui-skill.zip`。
+从 [Releases](https://github.com/Atomorrow123/Claude-ui/releases) 下载 `claude-ui-skill.zip`，在 *Settings → Capabilities → Skills* 上传。
 
 ### 方式三：手动
 
@@ -124,6 +141,13 @@ claude-ui/
 └── LICENSE
 ```
 
+## 作者
+
+- **齐天大圣123** — [@Atomorrow123](https://github.com/Atomorrow123)
+- **Claude Code**
+
+欢迎提 [Issue](https://github.com/Atomorrow123/Claude-ui/issues) 和 PR。
+
 ## License
 
-MIT
+[MIT](LICENSE) © 2026 齐天大圣123 & Claude Code
