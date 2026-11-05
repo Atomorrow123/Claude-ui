@@ -31,11 +31,13 @@ Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格
 
 | 文件 | 内容 |
 |---|---|
-| `SKILL.md` | 核心信条、工作流、排版/色彩/间距/动效规范、中文排版、可访问性、反 AI 味清单、交付自检清单 |
-| `references/tokens.css` | OKLCH 设计 token 模板（亮/暗模式、Tailwind v4 映射） |
-| `references/aesthetic-directions.md` | 6 种审美方向：Claude 原生、编辑排版、瑞士极简、暗色精密、柔和亲和、新粗野主义 |
-| `references/components.md` | 按钮、表单、卡片、导航、表格、弹窗、Toast、空状态等组件配方 |
-| `references/anti-patterns.md` | 19 条"AI 味"与中英混排常见反模式及替代方案 |
+| `SKILL.md` | 核心信条、任务分级工作流与审查模式、排版/色彩/间距/响应式/动效规范、中文排版、可访问性、文案与数据、反 AI 味清单、交付自检清单 |
+| `references/tokens.css` | OKLCH 设计 token 模板（`light-dark()` 亮/暗模式、图表调色板、Tailwind v4 与 shadcn/ui 映射） |
+| `references/aesthetic-directions.md` | 6 种审美方向：Claude 原生、编辑排版、瑞士极简、暗色精密、柔和亲和、新粗野主义（含对比度校验说明） |
+| `references/components.md` | 17 类组件配方：按钮、表单、选择控件、卡片、导航、Tabs、下拉菜单、Tooltip、表格、分页、弹窗、Toast、空状态、徽标/Kbd、头像、进度、骨架屏、命令面板、Hero |
+| `references/data-viz.md` | 数据可视化与仪表盘规范：布局层级、KPI 卡、图表选型、配色、去 chart junk、数字格式化 |
+| `references/ux-writing.md` | 中文界面文案指南：语气、标点与中西混排、按钮/报错/空状态文案、真实感数据 |
+| `references/anti-patterns.md` | 26 条"AI 味"与中英混排常见反模式及替代方案 |
 
 ---
 

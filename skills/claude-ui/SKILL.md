@@ -28,6 +28,19 @@ description: >-
 
 ## 1. 工作流程
 
+### 先判断任务类型（不要每次都跑完整流程）
+
+| 类型 | 例子 | 做法 |
+|---|---|---|
+| **小修** | 调一个按钮、修对齐、改配色 | 读现有样式 → 沿用已有 token / 组件 → 改 → 截图对比。不写简报、不引入新 token |
+| **新建** | 从零做页面、落地页、新产品 | 完整 7 步（下方） |
+| **重构** | "太丑了帮我改"、"去 AI 味" | 先审查（见下方「审查模式」）列出问题 → 与用户确认方向 → 按完整流程改 |
+| **审查** | "按清单检查一下" | 只输出审查报告，不擅自改代码（除非用户要求） |
+
+**修改现有项目时**：先找到项目已有的 token / 主题文件（`tailwind.config`、`globals.css`、`theme.ts`、CSS 变量），**在其基础上扩展**，不要另起一套并行的变量；改动范围与用户要求匹配，不顺手重写无关页面。
+
+### 完整流程
+
 ```
 理解场景 → 设计简报 → 定义 Token → 灰度骨架 → 组件与状态 → 打磨 → 自检（最好截图验证）
 ```
@@ -60,7 +73,26 @@ description: >-
 对齐、光学修正、微交互、空状态文案、响应式断点、暗色模式。
 
 ### Step 7 · 自检
-逐条过 §10 清单。如果有浏览器工具可用，**打开页面截图看一眼**，以真实渲染为准，不要凭想象交付。
+逐条过 §11 清单。如果有浏览器工具可用，**打开页面截图看一眼**，以真实渲染为准，不要凭想象交付。至少截：桌面亮色、375px 移动端、暗色（如支持）三张。
+
+### 审查模式（输出格式）
+审查已有界面时，按严重度输出，每条都要**可定位、可执行**：
+
+```
+## 审查结论
+一句话总评 + 当前最影响观感/可用性的 3 个问题。
+
+## 问题清单
+| 级别 | 位置 | 问题 | 修改建议 |
+|---|---|---|---|
+| P0 可用性/无障碍 | Header 搜索按钮 | 图标按钮无 aria-label，焦点环被 outline:none 去掉 | 加 aria-label="搜索"；恢复 :focus-visible 样式 |
+| P1 视觉层级 | Hero | 3 个按钮同为实心主色，无焦点 | 保留 1 个 Primary，其余改 Secondary/Link |
+| P2 细节打磨 | 卡片列表 | 间距 13px / 18px / 22px 混用 | 统一为 --space-4 / --space-6 |
+
+## 做得好的地方（保留）
+## 建议的改造顺序
+```
+P0 = 有人用不了（对比度、键盘、焦点、语义、溢出破版）；P1 = 层级/一致性明显问题；P2 = 打磨项。
 
 ---
 
@@ -125,7 +157,8 @@ description: >-
 - **不要纯黑纯白**：文字用 `#1a1915` 一类的近黑，背景用 `#faf9f5` 一类的米白或 `#fafafa`。纯 `#000` on `#fff` 刺眼且廉价。
 - **中性色带一点色相**：让灰色向强调色的色相偏 2–8% 饱和度（暖强调配暖灰，冷强调配冷灰），整体会立刻"统一"。
 - 推荐用 **OKLCH** 定义色阶，亮度感知均匀：`oklch(62% 0.14 40)`。
-- **对比度**：正文 ≥ 4.5:1，大字/图标 ≥ 3:1。次要文字不要灰到看不清（常见错误：`#999` on `#fff` 只有 2.8:1）。
+- **对比度**：正文 ≥ 4.5:1，大字/图标 ≥ 3:1；**表单控件边框、焦点环、图表线条等非文字元素 ≥ 3:1**（输入框边框不能用装饰性的淡边框）。次要文字不要灰到看不清（常见错误：`#999` on `#fff` 只有 2.8:1）。
+- **品牌色上的文字要单独验证**：很多好看的中等明度色（赤陶、鼠尾草绿、珊瑚红）配白字都不到 4.5:1，按钮底色往往要比"品牌色"深一档。
 - **文字颜色 3 档就够**：primary（标题/正文）、secondary（说明）、tertiary（占位/禁用）。
 - 强调色在大面积背景上要降饱和或用浅色调（tint），实心饱和色只用于小面积按钮/徽标。
 - 一页里卡片不要每张换一个颜色 —— 彩虹卡片是新手标志。
@@ -135,7 +168,9 @@ description: >-
 - 强调色在暗色下**降低饱和、略提亮度**，避免发光刺眼。
 - 文字用 `~#ececec` 而不是 `#fff`，次要文字适当提亮保证对比。
 - 边框比亮色模式更重要（阴影在暗背景上几乎不可见）。
-- 用 `color-scheme: light dark` 与 `light-dark()`/CSS 变量切换，图片与插画考虑降亮度。
+- **实现**：`:root { color-scheme: light dark }` + 语义色写成 `light-dark(亮, 暗)`（tokens.css 已如此）；`<head>` 里加 `<meta name="color-scheme" content="light dark">` 防白闪。原生滚动条、表单控件会自动跟随。
+- **切换按钮**：默认跟随系统即可，大多数产品**不需要常驻的明暗切换按钮**，放进设置页（浅色 / 深色 / 跟随系统 三选项）。确需切换时改 `<meta name="color-scheme">` 的值并持久化到 `localStorage`，在 `<head>` 内联脚本里提前应用以免闪烁；不要只靠 JS 加 `.dark` 类（JS 失败时会与系统偏好错位）。
+- 图片与插画考虑提供暗色版本或降低亮度；代码块、视频播放器等可用 `color-scheme: dark` 局部固定为暗色。
 
 ---
 
@@ -153,6 +188,14 @@ description: >-
 - **不对称有张力**：不要所有区块都"居中标题 + 三列卡片"。尝试左文右图、7/5 分栏、大小交错的 bento 网格。
 - **密度匹配用户**：B 端工具可以紧凑（行高 32–40px 的表格行），C 端营销页要松弛。
 - 移动端：触控目标 ≥ 44×44px，页面左右边距 16–20px，单列优先。
+
+### 响应式
+- **移动优先**：先写窄屏样式，再用 `min-width` 向上增强。检查宽度：375 / 768 / 1024 / 1280 / 1920px。
+- **少用断点，多用内在布局**：`grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr))`、`flex-wrap`、`clamp()` 流体字号与间距（tokens 中的 `--gutter`、`--space-section`），往往不需要任何媒体查询。
+- **组件按容器响应**：卡片、侧栏小部件用容器查询 `container-type: inline-size` + `@container`，同一组件放在主栏和侧栏都能自适应；页面级布局才用媒体查询。
+- 窄屏不是"把桌面缩小"：导航收进抽屉/底部标签栏，表格转卡片或横向滚动，多列表单变单列，悬停才出现的操作改为常显。
+- 使用 `100dvh` 而不是 `100vh`（移动端地址栏）；固定底栏加 `padding-bottom: env(safe-area-inset-bottom)`。
+- 图片：`max-width: 100%; height: auto` + 显式 `width`/`height` 或 `aspect-ratio` 防布局偏移；响应式图片用 `srcset`/`sizes`，首屏外图片 `loading="lazy"`，首屏主图 `fetchpriority="high"`。
 
 ### 圆角
 - 选一套并坚持：如 `4 / 8 / 12 / 16 / 9999`。
@@ -180,6 +223,9 @@ description: >-
 - **卡片**：只在内容确实需要分组时使用；不要卡片套卡片套卡片。
 - **徽标与标签**：`.badge`、`<kbd>`、Tab 项使用 `min-height` + 紧凑行高 + `white-space: nowrap` + `flex-shrink: 0`；横向排列的 Flex 容器加 `flex-wrap: wrap`，防止挤压折行溢出。
 - **表格**：数字右对齐 + tabular-nums，文字左对齐；斑马纹或分隔线二选一；表头弱化（小号、次要色、可大写）。
+- **先用原生元素**：`<dialog>`、`popover`、`<select>`（可渐进增强为 `appearance: base-select`）、`<input type="checkbox" switch>`、`accent-color`。原生元素自带键盘、焦点、读屏语义；自己用 `<div>` 拼的组件几乎总会漏掉其中一项。
+- **选对控件**：多选/需保存 → Checkbox；立即生效 → Switch；互斥 ≤ 5 项 → Radio / 分段控件；更多 → Select / Combobox。下拉菜单、Tooltip、Tabs、分页、头像、命令面板等配方见 components.md。
+- **使用组件库时**（shadcn/ui、Ant Design、MUI…）：不要重写组件，而是把库的主题变量接到 token（tokens.css 末尾有 shadcn 映射），统一圆角、字体、颜色后，界面就不再是"默认模板"。
 
 ---
 
@@ -210,20 +256,39 @@ description: >-
 | **Focus** | `:focus-visible` 清晰焦点环（2px 强调色 + 2px offset），**绝不 `outline: none` 了事** |
 | **Disabled** | 降低对比 + `cursor: not-allowed`，并尽量告诉用户为什么不可用 |
 | **Success** | 轻量 toast 或就地反馈，自动消失，不打断流程 |
+| **极端内容** | 超长用户名/标题、0 条与 10,000 条数据、缺失头像/图片、多语言翻译后变长 —— 用真实的极端样例测试一遍 |
+| **离线 / 慢网** | 提交时断网要保留用户输入；乐观更新失败要回滚并提示 |
 
 ---
 
 ## 8. 可访问性（底线，不是加分项）
 
-- 语义化 HTML：`<button>` 用于操作，`<a>` 用于跳转，标题层级 h1→h2→h3 不跳级。
-- 所有交互元素可键盘访问，Tab 顺序合理，弹窗打开时焦点陷入、关闭后归还。
-- 图标按钮必须有 `aria-label`；装饰图片 `alt=""`。
+- 语义化 HTML：`<button>` 用于操作，`<a>` 用于跳转，标题层级 h1→h2→h3 不跳级；用 `<header>` `<nav>` `<main>` `<footer>` 地标；`<html lang="zh-CN">`。
+- 所有交互元素可键盘访问，Tab 顺序合理，弹窗打开时焦点陷入、关闭后归还；页首提供"跳到主要内容"链接。
+- 图标按钮必须有 `aria-label`；装饰图片 `alt=""`；有信息的图片写清楚图里是什么。
 - 不只靠颜色传达信息（错误状态 = 红色 + 图标 + 文字）。
-- 对比度达标（§3）；支持 200% 缩放不破版。
+- 对比度达标（§3，含非文字元素 3:1）；支持 200% 缩放与 320px 宽度不破版、不出现横向滚动。
+- 动态内容：Toast/表单错误用 `role="status"` / `role="alert"` 播报；加载区域 `aria-busy`。
+- **Windows 高对比度**（`forced-colors: active`）：阴影、背景图会被移除 —— 不要只用 `box-shadow` 表示焦点或边界，焦点用 `outline`（或 `outline: 2px solid transparent` 兜底）。
+- 低对比偏好（`prefers-contrast: more`）：加深边框与次要文字（tokens.css 已内置）。
+- 拿不准就用浏览器 DevTools 的无障碍面板 / Lighthouse 跑一次，再用键盘把主流程走一遍。
 
 ---
 
-## 9. 反 "AI 味" 清单（务必避开）
+## 9. 文案与数据
+
+文案和数据展示直接决定"像不像真产品"。详见 [references/ux-writing.md](references/ux-writing.md) 与 [references/data-viz.md](references/data-viz.md)。
+
+- **语气**：清楚 > 简洁 > 有个性；全站统一"你"或"您"；少用感叹号，不用 emoji 表达状态。
+- **中文标点**：全角标点，中英/中数之间加空格，按钮与标签不加句号。
+- **错误信息** = 发生了什么 + 怎么办（+ 你的数据是否安全）。
+- **示例内容要像真的**：真实感的中文人名、合理数值、近期日期；不用 Lorem ipsum，不编造用户数与增长率（用 `[待补充]` 标注）。
+- **仪表盘**：3–5 个 KPI + 1–2 张主图 + 明细表；每个数字有对比基准；图表配色接 `--chart-*`，要讲故事时只高亮一条、其余置灰。
+- **数字格式**：`Intl.NumberFormat`；中文大数用"万/亿"；表格数字 `tabular-nums` 右对齐；柱状图数值轴从 0 开始。
+
+---
+
+## 10. 反 "AI 味" 清单（务必避开）
 
 以下是 AI 生成界面最常见的平庸信号。详细的"症状 → 替代方案"见 [references/anti-patterns.md](references/anti-patterns.md)。
 
@@ -238,10 +303,11 @@ description: >-
 - ❌ 纯黑纯白、灰到看不清的次要文字
 - ❌ 只用 placeholder 当表单标签、去掉焦点环
 - ❌ 随意的间距值（13px、27px）和三种以上的圆角
+- ❌ 组件库 / 图表库默认主题直出、首屏堆砌 8–12 张 KPI 卡、`<div onclick>` 假按钮
 
 ---
 
-## 10. 交付前自检清单
+## 11. 交付前自检清单
 
 **层级与排版**
 - [ ] 眯眼看（或模糊截图）：每屏能一眼找到唯一焦点吗？
@@ -251,8 +317,8 @@ description: >-
 
 **色彩**
 - [ ] 强调色面积 ≤ 10%？只有一个 Primary 按钮？
-- [ ] 文字对比度达标？没有纯黑纯白？
-- [ ] 暗色模式（如有）检查过表面层级与强调色饱和度？
+- [ ] 文字对比度 ≥ 4.5:1，按钮白字与控件边框对比度验证过？没有纯黑纯白？
+- [ ] 暗色模式（如有）检查过表面层级与强调色饱和度？`<meta name="color-scheme">` 已配置？
 
 **间距与对齐**
 - [ ] 所有间距来自阶梯？组内 < 组间 < 区块？
@@ -261,18 +327,18 @@ description: >-
 
 **交互与状态**
 - [ ] hover / focus-visible / active / disabled 都有？
-- [ ] loading / empty / error 都设计了？
+- [ ] loading / empty / error / 极端长内容都设计并测过了？
 - [ ] 动效 ≤ 300ms、只动 transform/opacity、支持 reduced-motion？
 
 **响应式与可访问性**
-- [ ] 375px / 768px / 1280px / 1920px 下都检查过？
-- [ ] 键盘能走完主流程？图标按钮有 aria-label？
+- [ ] 375px / 768px / 1280px / 1920px 与 200% 缩放下都检查过？
+- [ ] 键盘能走完主流程？图标按钮有 aria-label？语义标签正确（非 div 按钮）？
 - [ ] 触控目标 ≥ 44px？
 
 **整体**
-- [ ] 去掉 AI 味了吗？（§9）
+- [ ] 去掉 AI 味了吗？（§10）
 - [ ] 签名细节是否被一致地执行？
-- [ ] 文案具体、真实、像人写的？
+- [ ] 文案具体、真实、像人写的？数据与图表遵守 §9 规范？
 
 ---
 
@@ -280,7 +346,9 @@ description: >-
 
 | 文件 | 用途 |
 |---|---|
-| [references/tokens.css](references/tokens.css) | 可直接使用的设计 token 起始模板（含亮/暗模式、Tailwind v4 映射说明） |
-| [references/aesthetic-directions.md](references/aesthetic-directions.md) | 6 种审美方向的完整参数（字体、配色、圆角、阴影、签名细节） |
-| [references/components.md](references/components.md) | 常用组件配方：按钮、输入框、卡片、导航、表格、弹窗、Toast、空状态 |
-| [references/anti-patterns.md](references/anti-patterns.md) | 反模式详解："症状 → 为什么不好 → 替代方案" |
+| [references/tokens.css](references/tokens.css) | 可直接使用的设计 token 起始模板（`light-dark()` 亮/暗模式、图表色、Tailwind v4 与 shadcn/ui 映射） |
+| [references/aesthetic-directions.md](references/aesthetic-directions.md) | 6 种审美方向的完整参数（字体、配色与对比度提示、圆角、阴影、签名细节） |
+| [references/components.md](references/components.md) | 17 类常用组件配方：按钮、表单、选择控件、卡片、导航、Tabs、下拉菜单、Tooltip、表格、分页、弹窗、Toast、空状态、徽标/Kbd、头像、进度、骨架屏、命令面板、Hero |
+| [references/data-viz.md](references/data-viz.md) | 数据可视化与仪表盘规范：布局层级、KPI 卡、图表选型、配色、去 chart junk、数字格式化 |
+| [references/ux-writing.md](references/ux-writing.md) | 中文界面文案指南：语气、全角标点与中西混排空格、按钮/报错/空状态文案、真实感示例数据 |
+| [references/anti-patterns.md](references/anti-patterns.md) | 26 条反模式详解："症状 → 为什么不好 → 替代方案" |

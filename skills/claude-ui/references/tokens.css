@@ -1,11 +1,13 @@
 /* ==========================================================================
-   Claude UI · Design Tokens 起始模板
+   Claude UI · Design Tokens 起始模板 (v1.1)
    默认方向："Claude 原生"（暖米白 + 赤陶强调 + 衬线标题）
-   按项目方向修改 §1 品牌色相 与 §2 字体即可快速换肤。
+   - 换肤：改 §1 的色相 与 §3 的字体即可。
+   - 暗色：语义色统一用 light-dark()，自动跟随 color-scheme；手动切换见 §9。
+   - 对比度：下方注释中的比值均为在 --bg / --surface 上的近似值，改色后请复测。
    ========================================================================== */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: light dark; /* 必须保持 light dark，手动覆盖见 §9，不要写死 */
 
   /* ---------- 1. 色彩原语 (OKLCH) ---------- */
   --hue-brand: 40;          /* 赤陶。冷色项目可改为 250（蓝）/ 160（绿）等 */
@@ -26,35 +28,55 @@
   --gray-900: oklch(21%  var(--chroma-neutral) var(--hue-neutral));
   --gray-950: oklch(16%  var(--chroma-neutral) var(--hue-neutral));
 
-  /* 品牌色阶 */
+  /* 品牌色阶。注意：Claude 官网赤陶 #c96442 ≈ oklch(61% 0.14 40)，
+     白字在其上仅约 3.9:1，不满足小字号 AA；因此按钮底色取更深的 600（≈ 5.2:1）。 */
   --brand-50:  oklch(96% 0.025 var(--hue-brand));
   --brand-100: oklch(92% 0.05  var(--hue-brand));
-  --brand-500: oklch(64% 0.13  var(--hue-brand));
-  --brand-600: oklch(57% 0.14  var(--hue-brand));
-  --brand-700: oklch(49% 0.13  var(--hue-brand));
+  --brand-400: oklch(68% 0.12  var(--hue-brand));
+  --brand-500: oklch(62% 0.13  var(--hue-brand));
+  --brand-600: oklch(54% 0.14  var(--hue-brand));
+  --brand-700: oklch(47% 0.13  var(--hue-brand));
 
-  /* ---------- 2. 语义色（组件只引用这一层） ---------- */
-  --bg:              oklch(98% 0.008 90);   /* 米白画布 ≈ #faf9f5 */
-  --surface:         var(--gray-0);          /* 卡片 / 面板 */
-  --surface-sunken:  var(--gray-100);        /* 输入框底、代码块 */
-  --surface-raised:  var(--gray-0);          /* 弹窗 / 下拉 */
-  --border:          oklch(20% 0.01 var(--hue-neutral) / 0.10);
-  --border-strong:   oklch(20% 0.01 var(--hue-neutral) / 0.18);
+  /* ---------- 2. 语义色（组件只引用这一层）light-dark(亮, 暗) ---------- */
+  --bg:             light-dark(oklch(98% 0.008 90),  oklch(19% 0.004 var(--hue-neutral))); /* 米白 ≈ #faf9f5 / ≈ #1f1e1d */
+  --surface:        light-dark(var(--gray-0),        oklch(23% 0.005 var(--hue-neutral))); /* 暗色：层级越高越亮 */
+  --surface-sunken: light-dark(var(--gray-100),      oklch(16% 0.004 var(--hue-neutral))); /* 输入框底、代码块、hover 底 */
+  --surface-raised: light-dark(var(--gray-0),        oklch(27% 0.006 var(--hue-neutral))); /* 弹窗 / 下拉 */
+  --border:         light-dark(oklch(20% 0.01 var(--hue-neutral) / 0.10), oklch(100% 0 0 / 0.09)); /* 装饰性分隔 */
+  --border-strong:  light-dark(oklch(20% 0.01 var(--hue-neutral) / 0.18), oklch(100% 0 0 / 0.16));
+  --border-input:   light-dark(oklch(62% 0.008 var(--hue-neutral)), oklch(54% 0.008 var(--hue-neutral))); /* 表单控件边界 ≥ 3:1（WCAG 1.4.11） */
 
-  --text:            var(--gray-950);        /* 主文字（近黑，非纯黑） */
-  --text-secondary:  var(--gray-600);        /* 说明文字，对比度 ≥ 4.5 */
-  --text-tertiary:   var(--gray-500);        /* 占位 / 禁用 */
-  --text-on-accent:  oklch(99% 0.005 var(--hue-brand));
+  --text:           light-dark(var(--gray-950), oklch(93% 0.006 var(--hue-neutral))); /* 近黑 / 非纯白 */
+  --text-secondary: light-dark(var(--gray-600), oklch(72% 0.006 var(--hue-neutral))); /* ≈ 6:1 / 7:1 */
+  --text-tertiary:  light-dark(var(--gray-500), oklch(58% 0.006 var(--hue-neutral))); /* ≈ 4:1，仅占位/禁用/大字元信息 */
 
-  --accent:          var(--brand-600);
-  --accent-hover:    var(--brand-700);
-  --accent-subtle:   var(--brand-50);        /* 选中背景、徽标底 */
-  --focus-ring:      var(--brand-500);
+  --accent:         light-dark(var(--brand-600), oklch(68% 0.12 var(--hue-brand)));  /* 暗色：提亮、降饱和 */
+  --accent-hover:   light-dark(var(--brand-700), oklch(74% 0.11 var(--hue-brand)));
+  --accent-subtle:  light-dark(var(--brand-50),  oklch(68% 0.12 var(--hue-brand) / 0.14)); /* 选中背景、徽标底 */
+  --text-on-accent: light-dark(oklch(99% 0.005 var(--hue-brand)), oklch(18% 0.01 var(--hue-brand)));
+  --focus-ring:     light-dark(var(--brand-500), var(--brand-400));
 
-  --success: oklch(55% 0.12 150);
-  --warning: oklch(70% 0.14 75);
-  --danger:  oklch(55% 0.18 27);
-  --info:    oklch(55% 0.12 240);
+  /* 状态色：亮色下可直接作文字（≥ 4.5:1），暗色下提亮 */
+  --success: light-dark(oklch(52% 0.12 150), oklch(74% 0.13 150));
+  --warning: light-dark(oklch(55% 0.12 70),  oklch(80% 0.13 80));
+  --danger:  light-dark(oklch(53% 0.18 27),  oklch(70% 0.16 25));
+  --info:    light-dark(oklch(52% 0.12 245), oklch(74% 0.11 245));
+  --text-on-danger: light-dark(oklch(99% 0 0), oklch(18% 0.02 27));
+
+  --success-subtle: color-mix(in oklab, var(--success) 12%, transparent);
+  --warning-subtle: color-mix(in oklab, var(--warning) 14%, transparent);
+  --danger-subtle:  color-mix(in oklab, var(--danger) 12%, transparent);
+  --info-subtle:    color-mix(in oklab, var(--info) 12%, transparent);
+
+  /* 图表分类色：同明度、错开色相；对背景 ≥ 3:1。顺序即使用优先级，见 data-viz.md */
+  --chart-1: light-dark(oklch(58% 0.13 var(--hue-brand)), oklch(72% 0.12 var(--hue-brand)));
+  --chart-2: light-dark(oklch(58% 0.11 250), oklch(72% 0.10 250));
+  --chart-3: light-dark(oklch(58% 0.11 160), oklch(72% 0.11 160));
+  --chart-4: light-dark(oklch(62% 0.12 85),  oklch(78% 0.12 85));
+  --chart-5: light-dark(oklch(56% 0.11 320), oklch(72% 0.10 320));
+  --chart-6: light-dark(oklch(58% 0.09 205), oklch(74% 0.09 205));
+  --chart-muted: light-dark(var(--gray-300), oklch(38% 0.006 var(--hue-neutral))); /* 非高亮系列、对比基线 */
+  --chart-grid:  var(--border);
 
   /* ---------- 3. 字体 ---------- */
   --font-sans:  "Inter", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
@@ -101,25 +123,31 @@
   --space-24: 6rem;    /* 96 */
   --space-32: 8rem;    /* 128 */
 
+  /* 流体间距：页面边距与区块间距随视口平滑变化，避免断点处跳变 */
+  --gutter:        clamp(1rem, 0.5rem + 2.5vw, 2.5rem);  /* 16 → 40 页面左右边距 */
+  --space-section: clamp(4rem, 2rem + 6vw, 8rem);        /* 64 → 128 区块间距 */
+
   --container: 1200px;
+  --container-prose: 720px;
   --measure: 65ch;
 
-  /* ---------- 5. 圆角 ---------- */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  /* ---------- 5. 圆角（xs 仅用于 kbd/小徽标；嵌套：内 = 外 − padding） ---------- */
+  --radius-xs: 4px;
+  --radius-sm: 8px;    /* 按钮、输入框 */
+  --radius-md: 12px;   /* 小卡片、下拉菜单 */
+  --radius-lg: 16px;   /* 卡片 */
+  --radius-xl: 24px;   /* 弹窗、大容器 */
   --radius-full: 9999px;
 
-  /* ---------- 6. 阴影（分层 + 带色相） ---------- */
-  --shadow-color: 30% 0.02 var(--hue-neutral); /* L 必须带 %，否则按 0–1 解析 */
-  --shadow-sm: 0 1px 2px oklch(var(--shadow-color) / 0.06);
-  --shadow-md: 0 1px 2px oklch(var(--shadow-color) / 0.05),
-               0 4px 12px oklch(var(--shadow-color) / 0.07);
-  --shadow-lg: 0 2px 4px oklch(var(--shadow-color) / 0.05),
-               0 12px 32px oklch(var(--shadow-color) / 0.10);
-  --shadow-xl: 0 4px 8px oklch(var(--shadow-color) / 0.06),
-               0 24px 64px oklch(var(--shadow-color) / 0.14);
+  /* ---------- 6. 阴影（分层 + 带色相；暗色下自动换成黑色） ---------- */
+  --shadow-base: light-dark(oklch(30% 0.02 var(--hue-neutral)), oklch(0% 0 0));
+  --shadow-sm: 0 1px 2px color-mix(in oklab, var(--shadow-base) 6%, transparent);
+  --shadow-md: 0 1px 2px color-mix(in oklab, var(--shadow-base) 5%, transparent),
+               0 4px 12px color-mix(in oklab, var(--shadow-base) 7%, transparent);
+  --shadow-lg: 0 2px 4px color-mix(in oklab, var(--shadow-base) 5%, transparent),
+               0 12px 32px color-mix(in oklab, var(--shadow-base) 10%, transparent);
+  --shadow-xl: 0 4px 8px color-mix(in oklab, var(--shadow-base) 6%, transparent),
+               0 24px 64px color-mix(in oklab, var(--shadow-base) 14%, transparent);
 
   /* ---------- 7. 动效 ---------- */
   --duration-fast: 120ms;
@@ -135,31 +163,77 @@
   --z-overlay:  300;
   --z-modal:    400;
   --z-toast:    500;
+  /* 注：<dialog> 与 [popover] 位于 top layer，不需要 z-index */
+
+  /* 原生控件（checkbox / radio / range / progress）跟随品牌色 */
+  accent-color: var(--accent);
 }
 
-/* ---------- 暗色模式：不是反色，而是重新设计 ---------- */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) { /* 同时支持手动切换 */
-    --bg:             oklch(19% 0.004 var(--hue-neutral));  /* ≈ #1f1e1d，非纯黑 */
-    --surface:        oklch(23% 0.005 var(--hue-neutral));  /* 层级越高越亮 */
-    --surface-sunken: oklch(16% 0.004 var(--hue-neutral));
-    --surface-raised: oklch(27% 0.006 var(--hue-neutral));
-    --border:         oklch(100% 0 0 / 0.09);
-    --border-strong:  oklch(100% 0 0 / 0.16);
+/* ---------- 9. 手动切换亮/暗（可选） ----------
+   默认跟随系统，绝大多数站点不需要常驻切换按钮（放在设置页即可）。
+   推荐方式：改 <meta name="color-scheme"> 的 content，CSS 映射回 color-scheme：
+     <meta name="color-scheme" content="light dark">
+     <script>document.querySelector('meta[name="color-scheme"]').content =
+       localStorage.getItem("color-scheme") ?? "light dark";</script>   ← 放在 meta 后，防闪烁
+   框架里不便改 meta 时，也可在 <html> 上设 data-theme="light|dark"。 */
+:root:has(> head > meta[name="color-scheme"][content="dark"]),
+:root[data-theme="dark"]  { color-scheme: dark; }
+:root:has(> head > meta[name="color-scheme"][content="light"]),
+:root[data-theme="light"] { color-scheme: light; }
 
-    --text:           oklch(93% 0.006 var(--hue-neutral));  /* 非纯白 */
-    --text-secondary: oklch(72% 0.006 var(--hue-neutral));
-    --text-tertiary:  oklch(58% 0.006 var(--hue-neutral));
+/* 局部强制某一配色（如永远是暗色的代码块 / 视频播放器） */
+.scheme-dark  { color-scheme: dark; }
+.scheme-light { color-scheme: light; }
 
-    --accent:         oklch(68% 0.12 var(--hue-brand));     /* 提亮、降饱和 */
-    --accent-hover:   oklch(74% 0.11 var(--hue-brand));
-    --accent-subtle:  oklch(68% 0.12 var(--hue-brand) / 0.14);
-    --text-on-accent: oklch(18% 0.01 var(--hue-brand));
-
-    --shadow-color: 0% 0 0;
+/* ---------- 10. 用户偏好 ---------- */
+@media (prefers-contrast: more) {
+  :root {
+    --border:         var(--border-input);
+    --border-strong:  var(--border-input);
+    --text-secondary: var(--text);
+    --text-tertiary:  light-dark(var(--gray-700), oklch(80% 0.006 var(--hue-neutral)));
   }
 }
-[data-theme="dark"] { /* 手动暗色：复制上方暗色变量块到这里 */ }
+
+/* Windows 高对比度（强制颜色）：阴影与背景图会被移除，靠系统色维持边界与焦点 */
+@media (forced-colors: active) {
+  :root { --focus-ring: Highlight; }
+}
+
+/* ---------- 11. 旧浏览器回退（可删除） ----------
+   light-dark() 支持：Chrome/Edge 123+、Firefox 120+、Safari 17.5+。
+   若目标浏览器都满足，可整段删除；否则保留，修改上方颜色时同步修改这里。
+   回退模式下只跟随系统偏好，手动切换不生效。 */
+@supports not (color: light-dark(#fff, #000)) {
+  :root {
+    --bg: oklch(98% 0.008 90); --surface: var(--gray-0); --surface-sunken: var(--gray-100); --surface-raised: var(--gray-0);
+    --border: oklch(20% 0.01 var(--hue-neutral) / 0.10); --border-strong: oklch(20% 0.01 var(--hue-neutral) / 0.18);
+    --border-input: oklch(62% 0.008 var(--hue-neutral));
+    --text: var(--gray-950); --text-secondary: var(--gray-600); --text-tertiary: var(--gray-500);
+    --accent: var(--brand-600); --accent-hover: var(--brand-700); --accent-subtle: var(--brand-50);
+    --text-on-accent: oklch(99% 0.005 var(--hue-brand)); --focus-ring: var(--brand-500);
+    --success: oklch(52% 0.12 150); --warning: oklch(55% 0.12 70); --danger: oklch(53% 0.18 27); --info: oklch(52% 0.12 245);
+    --text-on-danger: oklch(99% 0 0);
+    --chart-1: oklch(58% 0.13 var(--hue-brand)); --chart-2: oklch(58% 0.11 250); --chart-3: oklch(58% 0.11 160);
+    --chart-4: oklch(62% 0.12 85); --chart-5: oklch(56% 0.11 320); --chart-6: oklch(58% 0.09 205); --chart-muted: var(--gray-300);
+    --shadow-base: oklch(30% 0.02 var(--hue-neutral));
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: oklch(19% 0.004 var(--hue-neutral)); --surface: oklch(23% 0.005 var(--hue-neutral));
+      --surface-sunken: oklch(16% 0.004 var(--hue-neutral)); --surface-raised: oklch(27% 0.006 var(--hue-neutral));
+      --border: oklch(100% 0 0 / 0.09); --border-strong: oklch(100% 0 0 / 0.16); --border-input: oklch(54% 0.008 var(--hue-neutral));
+      --text: oklch(93% 0.006 var(--hue-neutral)); --text-secondary: oklch(72% 0.006 var(--hue-neutral)); --text-tertiary: oklch(58% 0.006 var(--hue-neutral));
+      --accent: oklch(68% 0.12 var(--hue-brand)); --accent-hover: oklch(74% 0.11 var(--hue-brand)); --accent-subtle: oklch(68% 0.12 var(--hue-brand) / 0.14);
+      --text-on-accent: oklch(18% 0.01 var(--hue-brand)); --focus-ring: var(--brand-400);
+      --success: oklch(74% 0.13 150); --warning: oklch(80% 0.13 80); --danger: oklch(70% 0.16 25); --info: oklch(74% 0.11 245);
+      --text-on-danger: oklch(18% 0.02 27);
+      --chart-1: oklch(72% 0.12 var(--hue-brand)); --chart-2: oklch(72% 0.10 250); --chart-3: oklch(72% 0.11 160);
+      --chart-4: oklch(78% 0.12 85); --chart-5: oklch(72% 0.10 320); --chart-6: oklch(74% 0.09 205); --chart-muted: oklch(38% 0.006 var(--hue-neutral));
+      --shadow-base: oklch(0% 0 0);
+    }
+  }
+}
 
 /* ---------- 基础重置与全局排版 ---------- */
 *, *::before, *::after { box-sizing: border-box; }
@@ -172,6 +246,7 @@ button, input, select, textarea, optgroup {
 
 html {
   -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
 }
@@ -199,15 +274,23 @@ h1, h2, h3, h4 {
 
 p { text-wrap: pretty; max-width: var(--measure); }
 
+img, svg, video, canvas { display: block; max-width: 100%; }
+img, video { height: auto; }
+
 :focus-visible {
   outline: 2px solid var(--focus-ring);
   outline-offset: 2px;
-  border-radius: var(--radius-sm);
 }
 
 ::selection { background: var(--accent-subtle); }
 
 .tabular { font-variant-numeric: tabular-nums; }
+
+/* 视觉隐藏但读屏可读（图标按钮补充文字、跳转链接等） */
+.sr-only {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
@@ -219,19 +302,46 @@ p { text-wrap: pretty; max-width: var(--measure); }
 }
 
 /* ==========================================================================
-   Tailwind v4 映射示例（放进 app.css）：
+   框架映射
+
+   ▸ Tailwind v4（放进 app.css）：
    @import "tailwindcss";
+   @import "./tokens.css";
    @theme inline {
      --color-bg: var(--bg);
      --color-surface: var(--surface);
+     --color-sunken: var(--surface-sunken);
      --color-border: var(--border);
      --color-fg: var(--text);
      --color-muted: var(--text-secondary);
+     --color-subtle: var(--text-tertiary);
      --color-accent: var(--accent);
+     --color-accent-fg: var(--text-on-accent);
+     --color-danger: var(--danger);
      --font-sans: var(--font-body);
      --font-serif: var(--font-display);
+     --radius-sm: var(--radius-sm);
      --radius-md: var(--radius-md);
+     --radius-lg: var(--radius-lg);
      --shadow-md: var(--shadow-md);
    }
+   @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); ← 仅当需要 dark: 前缀时
    之后即可使用 bg-bg / text-fg / text-muted / bg-accent / border-border 等类名。
+   颜色已由 light-dark() 自动切换，通常无需再写 dark: 前缀。
+
+   ▸ shadcn/ui（覆盖其 CSS 变量即可，无需改组件源码）：
+   :root {
+     --background: var(--bg);            --foreground: var(--text);
+     --card: var(--surface);             --card-foreground: var(--text);
+     --popover: var(--surface-raised);   --popover-foreground: var(--text);
+     --primary: var(--accent);           --primary-foreground: var(--text-on-accent);
+     --secondary: var(--surface-sunken); --secondary-foreground: var(--text);
+     --muted: var(--surface-sunken);     --muted-foreground: var(--text-secondary);
+     --accent: var(--surface-sunken);    --accent-foreground: var(--text);  ← 注意：shadcn 的 accent 是 hover 底色
+     --destructive: var(--danger);
+     --border: var(--border-strong);     --input: var(--border-input);  --ring: var(--focus-ring);
+     --radius: var(--radius-sm);
+   }
+   ⚠ 命名冲突：shadcn 也用 --accent / --border。整合时先把本文件的同名语义变量
+     重命名（如 --cu-accent），或只引入 §1 原语后再按上表映射。
    ========================================================================== */
