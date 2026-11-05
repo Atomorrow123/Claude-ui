@@ -1,0 +1,12 @@
+{
+  "name": "claude-ui-marketplace",
+  "owner": { "name": "Claude UI" },
+  "plugins": [
+    {
+      "name": "claude-ui",
+      "source": "./",
+      "description": "An opinionated frontend UI building guide with design tokens, aesthetic directions, component recipes and an anti-AI-slop checklist.",
+      "version": "1.0.0"
+    }
+  ]
+}

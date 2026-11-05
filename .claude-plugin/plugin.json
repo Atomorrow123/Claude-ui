@@ -1,0 +1,8 @@
+{
+  "name": "claude-ui",
+  "version": "1.0.0",
+  "description": "An opinionated frontend UI building guide: design direction, typography, color, spacing, component states, motion, dark mode, CJK typography and an anti-AI-slop checklist.",
+  "author": { "name": "Claude UI" },
+  "keywords": ["ui", "design", "frontend", "design-tokens", "css", "skill"],
+  "license": "MIT"
+}

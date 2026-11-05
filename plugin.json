@@ -1,0 +1,14 @@
+{
+  // Antigravity plugin manifest
+  "name": "claude-ui",
+  "displayName": "Claude UI",
+  "description": "有明确审美立场的前端 UI 构建指南：设计方向决策、排版、色彩、间距、组件状态、动效、暗色模式、中文排版与反 AI 味自检清单。",
+  "version": "1.0.0",
+  "author": { "name": "Claude UI" },
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "用 Claude UI 给我做一个 AI 写作工具的落地页",
+    "按 Claude UI 的自检清单审查并优化当前页面的 UI",
+    "为这个项目生成一套亮/暗模式的设计 token"
+  ]
+}

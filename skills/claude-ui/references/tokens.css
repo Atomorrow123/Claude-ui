@@ -1,0 +1,231 @@
+/* ==========================================================================
+   Claude UI · Design Tokens 起始模板
+   默认方向："Claude 原生"（暖米白 + 赤陶强调 + 衬线标题）
+   按项目方向修改 §1 品牌色相 与 §2 字体即可快速换肤。
+   ========================================================================== */
+
+:root {
+  color-scheme: light dark;
+
+  /* ---------- 1. 色彩原语 (OKLCH) ---------- */
+  --hue-brand: 40;          /* 赤陶。冷色项目可改为 250（蓝）/ 160（绿）等 */
+  --hue-neutral: 75;        /* 中性色偏暖；冷色项目改为与 brand 接近的色相 */
+  --chroma-neutral: 0.006;  /* 中性色带一点点色相，0 = 纯灰 */
+
+  /* 中性色阶（亮 → 暗） */
+  --gray-0:   oklch(99%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-50:  oklch(97.5% var(--chroma-neutral) var(--hue-neutral));
+  --gray-100: oklch(95%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-200: oklch(91%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-300: oklch(85%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-400: oklch(72%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-500: oklch(58%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-600: oklch(48%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-700: oklch(38%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-800: oklch(28%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-900: oklch(21%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-950: oklch(16%  var(--chroma-neutral) var(--hue-neutral));
+
+  /* 品牌色阶 */
+  --brand-50:  oklch(96% 0.025 var(--hue-brand));
+  --brand-100: oklch(92% 0.05  var(--hue-brand));
+  --brand-500: oklch(64% 0.13  var(--hue-brand));
+  --brand-600: oklch(57% 0.14  var(--hue-brand));
+  --brand-700: oklch(49% 0.13  var(--hue-brand));
+
+  /* ---------- 2. 语义色（组件只引用这一层） ---------- */
+  --bg:              oklch(98% 0.008 90);   /* 米白画布 ≈ #faf9f5 */
+  --surface:         var(--gray-0);          /* 卡片 / 面板 */
+  --surface-sunken:  var(--gray-100);        /* 输入框底、代码块 */
+  --surface-raised:  var(--gray-0);          /* 弹窗 / 下拉 */
+  --border:          oklch(20% 0.01 var(--hue-neutral) / 0.10);
+  --border-strong:   oklch(20% 0.01 var(--hue-neutral) / 0.18);
+
+  --text:            var(--gray-950);        /* 主文字（近黑，非纯黑） */
+  --text-secondary:  var(--gray-600);        /* 说明文字，对比度 ≥ 4.5 */
+  --text-tertiary:   var(--gray-500);        /* 占位 / 禁用 */
+  --text-on-accent:  oklch(99% 0.005 var(--hue-brand));
+
+  --accent:          var(--brand-600);
+  --accent-hover:    var(--brand-700);
+  --accent-subtle:   var(--brand-50);        /* 选中背景、徽标底 */
+  --focus-ring:      var(--brand-500);
+
+  --success: oklch(55% 0.12 150);
+  --warning: oklch(70% 0.14 75);
+  --danger:  oklch(55% 0.18 27);
+  --info:    oklch(55% 0.12 240);
+
+  /* ---------- 3. 字体 ---------- */
+  --font-sans:  "Inter", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+  --font-serif: "Source Serif 4", "Newsreader", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
+  --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --font-display: var(--font-serif); /* 标题字体；瑞士/暗色精密方向改为 --font-sans */
+  --font-body:    var(--font-sans);
+
+  /* 字号阶梯 (1.25) */
+  --text-xs:   0.75rem;    /* 12 */
+  --text-sm:   0.875rem;   /* 14 */
+  --text-base: 1rem;       /* 16 */
+  --text-lg:   1.25rem;    /* 20 */
+  --text-xl:   1.5625rem;  /* 25 */
+  --text-2xl:  1.9375rem;  /* 31 */
+  --text-3xl:  2.4375rem;  /* 39 */
+  --text-4xl:  clamp(2.5rem, 1.6rem + 3.6vw, 4rem); /* 40 → 64 流体 */
+
+  --leading-tight: 1.15;
+  --leading-snug:  1.35;
+  --leading-body:  1.6;
+  --leading-cjk:   1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-wide:  0.06em;
+
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semibold: 600;
+
+  /* ---------- 4. 间距（4px 基准） ---------- */
+  --space-1: 0.25rem;  /* 4 */
+  --space-2: 0.5rem;   /* 8 */
+  --space-3: 0.75rem;  /* 12 */
+  --space-4: 1rem;     /* 16 */
+  --space-5: 1.25rem;  /* 20 */
+  --space-6: 1.5rem;   /* 24 */
+  --space-8: 2rem;     /* 32 */
+  --space-10: 2.5rem;  /* 40 */
+  --space-12: 3rem;    /* 48 */
+  --space-16: 4rem;    /* 64 */
+  --space-20: 5rem;    /* 80 */
+  --space-24: 6rem;    /* 96 */
+  --space-32: 8rem;    /* 128 */
+
+  --container: 1200px;
+  --measure: 65ch;
+
+  /* ---------- 5. 圆角 ---------- */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ---------- 6. 阴影（分层 + 带色相） ---------- */
+  --shadow-color: 30% 0.02 var(--hue-neutral); /* L 必须带 %，否则按 0–1 解析 */
+  --shadow-sm: 0 1px 2px oklch(var(--shadow-color) / 0.06);
+  --shadow-md: 0 1px 2px oklch(var(--shadow-color) / 0.05),
+               0 4px 12px oklch(var(--shadow-color) / 0.07);
+  --shadow-lg: 0 2px 4px oklch(var(--shadow-color) / 0.05),
+               0 12px 32px oklch(var(--shadow-color) / 0.10);
+  --shadow-xl: 0 4px 8px oklch(var(--shadow-color) / 0.06),
+               0 24px 64px oklch(var(--shadow-color) / 0.14);
+
+  /* ---------- 7. 动效 ---------- */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+  --ease-out:    cubic-bezier(0.2, 0, 0, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---------- 8. 层级 ---------- */
+  --z-dropdown: 100;
+  --z-sticky:   200;
+  --z-overlay:  300;
+  --z-modal:    400;
+  --z-toast:    500;
+}
+
+/* ---------- 暗色模式：不是反色，而是重新设计 ---------- */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) { /* 同时支持手动切换 */
+    --bg:             oklch(19% 0.004 var(--hue-neutral));  /* ≈ #1f1e1d，非纯黑 */
+    --surface:        oklch(23% 0.005 var(--hue-neutral));  /* 层级越高越亮 */
+    --surface-sunken: oklch(16% 0.004 var(--hue-neutral));
+    --surface-raised: oklch(27% 0.006 var(--hue-neutral));
+    --border:         oklch(100% 0 0 / 0.09);
+    --border-strong:  oklch(100% 0 0 / 0.16);
+
+    --text:           oklch(93% 0.006 var(--hue-neutral));  /* 非纯白 */
+    --text-secondary: oklch(72% 0.006 var(--hue-neutral));
+    --text-tertiary:  oklch(58% 0.006 var(--hue-neutral));
+
+    --accent:         oklch(68% 0.12 var(--hue-brand));     /* 提亮、降饱和 */
+    --accent-hover:   oklch(74% 0.11 var(--hue-brand));
+    --accent-subtle:  oklch(68% 0.12 var(--hue-brand) / 0.14);
+    --text-on-accent: oklch(18% 0.01 var(--hue-brand));
+
+    --shadow-color: 0% 0 0;
+  }
+}
+[data-theme="dark"] { /* 手动暗色：复制上方暗色变量块到这里 */ }
+
+/* ---------- 基础重置与全局排版 ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+}
+
+:lang(zh) body, body:lang(zh) { line-height: var(--leading-cjk); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  text-wrap: balance;
+  margin: 0;
+}
+:lang(zh) :is(h1, h2, h3, h4) { letter-spacing: 0; } /* 中文不收字距 */
+
+p { text-wrap: pretty; max-width: var(--measure); }
+
+:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+::selection { background: var(--accent-subtle); }
+
+.tabular { font-variant-numeric: tabular-nums; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ==========================================================================
+   Tailwind v4 映射示例（放进 app.css）：
+   @import "tailwindcss";
+   @theme inline {
+     --color-bg: var(--bg);
+     --color-surface: var(--surface);
+     --color-border: var(--border);
+     --color-fg: var(--text);
+     --color-muted: var(--text-secondary);
+     --color-accent: var(--accent);
+     --font-sans: var(--font-body);
+     --font-serif: var(--font-display);
+     --radius-md: var(--radius-md);
+     --shadow-md: var(--shadow-md);
+   }
+   之后即可使用 bg-bg / text-fg / text-muted / bg-accent / border-border 等类名。
+   ========================================================================== */
