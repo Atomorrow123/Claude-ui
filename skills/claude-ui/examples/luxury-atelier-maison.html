@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>MAISON VÉRITÉ — 高级制表与几何美学秋季私人沙龙</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400&family=Noto+Serif+SC:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       设计简报 (Claude UI v1.2 · 高定奢品与策展网格测试页)
+       1. 领域与先例：高级制表与艺术典藏 · 参考 Cartier (剧场奢华) × MoMA (外露瑞士网格)
+       2. 基底与变奏：深邃丝绒黑 (#0c0b0a) / 香槟羊皮白 (#fcfaf5) + 香槟金游丝线 + 0px 绝对直角
+       3. 签名细节：  0.2em 宽字距大写眉标 + 馆藏编号 (FIG. 01) 材质切换透镜 + 私人沙龙鉴赏预约台
+       ========================================================================== */
+    :root {
+      color-scheme: light dark;
+      --bg:             light-dark(#fcfaf5, #0c0b0a);
+      --surface:        light-dark(#ffffff, #13110f);
+      --surface-sunken: light-dark(#f3efe6, #080706);
+
+      --text:           light-dark(#141210, #f7f4ed);
+      --text-secondary: light-dark(#5c564d, #a8a296);
+      --text-tertiary:  light-dark(#857d70, #756f64);
+
+      --gold:           light-dark(#8a6928, #c5a365);
+      --gold-hover:     light-dark(#6e521c, #d6b67a);
+      --text-on-gold:   light-dark(#ffffff, #0c0b0a);
+      --hairline:       1px solid light-dark(rgba(138, 105, 40, 0.24), rgba(197, 163, 101, 0.25));
+      --hairline-strong:1px solid light-dark(rgba(138, 105, 40, 0.50), rgba(197, 163, 101, 0.55));
+
+      --font-display:   "Cormorant Garamond", "Noto Serif SC", "Songti SC", Georgia, serif;
+      --font-body:      "Inter", "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+      --font-mono:      "JetBrains Mono", "PingFang SC", monospace;
+
+      --ease-theater:   cubic-bezier(0.16, 1, 0.3, 1);
+      accent-color:     var(--gold);
+    }
+
+    :root[data-theme="dark"]  { color-scheme: dark; }
+    :root[data-theme="light"] { color-scheme: light; }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    button, input, select { font: inherit; color: inherit; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .tabular { font-variant-numeric: tabular-nums; }
+
+    /* 顶部画册级对称导航栏（外露细线） */
+    .Header {
+      border-bottom: var(--hairline);
+      padding: 0 clamp(1.25rem, 4vw, 3.5rem);
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      display: block;
+    }
+    .maison-logo {
+      font-family: var(--font-display);
+      font-size: 24px;
+      letter-spacing: 0.16em;
+      font-weight: 500;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    /* 0px 锋利直角按钮 */
+    .btn-luxury {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-height: 46px;
+      padding: 0 32px;
+      border-radius: 0;
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 420ms var(--ease-theater), color 420ms var(--ease-theater), border-color 420ms var(--ease-theater);
+    }
+    .btn-luxury--primary {
+      background: var(--gold);
+      color: var(--text-on-gold);
+      border: var(--hairline-strong);
+    }
+    .btn-luxury--primary:hover {
+      background: var(--gold-hover);
+    }
+    .btn-luxury--outline {
+      background: transparent;
+      color: var(--text);
+      border: var(--hairline-strong);
+    }
+    .btn-luxury--outline:hover,
+    .btn-luxury--outline[aria-selected="true"] {
+      background: var(--surface);
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    /* 外露瑞士网格主画布 */
+    .vitrine-grid {
+      max-width: 1320px;
+      margin: 0 auto;
+      border-left: var(--hairline);
+      border-right: var(--hairline);
+    }
+
+    /* Hero 剧场开场 */
+    .hero-vitrine {
+      display: grid;
+      grid-template-columns: 7fr 5fr;
+      border-bottom: var(--hairline);
+    }
+    @media (max-width: 920px) {
+      .hero-vitrine { grid-template-columns: 1fr; }
+    }
+    .hero-vitrine__main {
+      padding: clamp(2.5rem, 6vw, 5.5rem) clamp(1.5rem, 4vw, 4rem);
+      border-right: var(--hairline);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 4.8vw, 4.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin: 18px 0 24px;
+    }
+    .hero-prose {
+      font-size: 15px;
+      line-height: 1.9;
+      color: var(--text-secondary);
+      max-width: 52ch;
+      margin-bottom: 40px;
+    }
+
+    /* 右侧：几何腕表光学透镜图解与材质切换 */
+    .hero-vitrine__stage {
+      background: var(--surface);
+      padding: clamp(2rem, 4vw, 3.5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+    .watch-dial-frame {
+      width: 240px;
+      height: 240px;
+      margin: 24px auto;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .spec-strip {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: var(--hairline);
+      border-bottom: var(--hairline);
+      padding: 16px 0;
+      margin-top: 20px;
+    }
+    .spec-strip__label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      color: var(--text-secondary);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .spec-strip__val {
+      font-family: var(--font-display);
+      font-size: 19px;
+      color: var(--text);
+    }
+
+    /* 下半部：馆藏作品三栏展签与私人沙龙预约 */
+    .archive-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 860px) {
+      .archive-row { grid-template-columns: 1fr; }
+    }
+    .archive-cell {
+      padding: clamp(2rem, 4vw, 3.5rem);
+      border-bottom: var(--hairline);
+    }
+    .archive-cell:first-child {
+      border-right: var(--hairline);
+    }
+
+    .input-luxury {
+      width: 100%;
+      min-height: 44px;
+      padding: 0 14px;
+      background: var(--bg);
+      color: var(--text);
+      border: var(--hairline-strong);
+      border-radius: 0;
+      font-size: 14px;
+    }
+
+    @media (forced-colors: active) {
+      .btn-luxury, .input-luxury { border: 1px solid ButtonText; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="Header">
+    <span class="eyebrow" style="margin: 0;">PARIS · SHANGHAI · GENÈVE</span>
+    <a href="#" class="maison-logo">MAISON VÉRITÉ</a>
+    <button type="button" id="theme-toggle" class="btn-luxury btn-luxury--outline" style="min-height: 36px; padding: 0 16px;">
+      切换 丝绒夜 / 羊皮昼
+    </button>
+  </header>
+
+  <main class="vitrine-grid">
+    <!-- Hero：左文右展柜 -->
+    <section class="hero-vitrine">
+      <div class="hero-vitrine__main">
+        <div>
+          <span class="eyebrow">COLLECTION OCTOGONE · 2026 高级制表典藏展</span>
+          <h1 class="hero-title">
+            光影在八角表圈上，<br>凝结成永恒的建筑几何。
+          </h1>
+          <p class="hero-prose">
+            承袭 1928 年巴黎装饰艺术时期的黄金分割手稿，Calibre 9601 MC 型镂空机芯以立柱式夹板支撑发条盒，让引力与游丝的每一次呼吸皆悬浮于通透蓝宝石水晶之间。
+          </p>
+        </div>
+
+        <div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary); margin-bottom: 12px; letter-spacing: 0.08em;">
+            SELECT ARCHIVE EDITION · 切换馆藏表壳材质透镜
+          </div>
+          <div role="tablist" aria-label="腕表材质版本切换" style="display: flex; flex-wrap: wrap; gap: 10px;">
+            <button type="button" role="tab" class="btn-luxury btn-luxury--outline edition-btn" aria-selected="true"
+              data-fig="FIG. 01 / 玫瑰金镂空典藏版"
+              data-calibre="Calibre 9601 MC"
+              data-reserve="72 小时"
+              data-limit="全球 50 枚"
+              data-stroke="#c5a365">
+              01 · 18K 玫瑰金
+            </button>
+            <button type="button" role="tab" class="btn-luxury btn-luxury--outline edition-btn" aria-selected="false"
+              data-fig="FIG. 02 / 950 铂金陨石盘孤品"
+              data-calibre="Calibre 9452陀飞轮"
+              data-reserve="96 小时"
+              data-limit="独立编号 10 枚"
+              data-stroke="#d4d4d8">
+              02 · 950 铂金陨石
+            </button>
+            <button type="button" role="tab" class="btn-luxury btn-luxury--outline edition-btn" aria-selected="false"
+              data-fig="FIG. 03 / 深邃赤陶珐琅微绘"
+              data-calibre="Calibre 430 MC"
+              data-reserve="60 小时"
+              data-limit="全球 25 枚"
+              data-stroke="#c96442">
+              03 · 大明火珐琅
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 右侧：八角精密几何表盘 SVG 展柜 -->
+      <div class="hero-vitrine__stage">
+        <div style="width: 100%; display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 11px; color: var(--text-secondary);">
+          <span id="fig-code">FIG. 01 / 玫瑰金镂空典藏版</span>
+          <span class="tabular">REF. MV-8804</span>
+        </div>
+
+        <div class="watch-dial-frame">
+          <svg id="watch-svg" width="220" height="220" viewBox="0 0 220 220" role="img" aria-label="八角几何镂空机械腕表精密结构图">
+            <!-- 外八角表壳 -->
+            <polygon id="case-poly" points="66,14 154,14 206,66 206,154 154,206 66,206 14,154 14,66" fill="none" stroke="#c5a365" stroke-width="2"/>
+            <polygon points="72,24 148,24 196,72 196,148 148,196 72,196 24,148 24,72" fill="none" stroke="#c5a365" stroke-width="0.75" stroke-dasharray="3 3"/>
+            <!-- 镂空放射桥板 -->
+            <circle cx="110" cy="110" r="64" fill="none" stroke="#c5a365" stroke-width="1"/>
+            <circle cx="110" cy="110" r="34" fill="none" stroke="#c5a365" stroke-width="0.75"/>
+            <line x1="110" y1="24" x2="110" y2="196" stroke="#c5a365" stroke-width="0.6" opacity="0.5"/>
+            <line x1="24" y1="110" x2="196" y2="110" stroke="#c5a365" stroke-width="0.6" opacity="0.5"/>
+            <!-- 剑形指针 -->
+            <line x1="110" y1="110" x2="110" y2="56" stroke="#c5a365" stroke-width="2.5"/>
+            <line x1="110" y1="110" x2="152" y2="110" stroke="#c5a365" stroke-width="1.8"/>
+            <circle cx="110" cy="110" r="4" fill="#c5a365"/>
+          </svg>
+        </div>
+
+        <div class="spec-strip">
+          <div>
+            <span class="spec-strip__label">自制机芯</span>
+            <span class="spec-strip__val" id="spec-calibre">Calibre 9601 MC</span>
+          </div>
+          <div style="border-left: var(--hairline); border-right: var(--hairline);">
+            <span class="spec-strip__label">动力储存</span>
+            <span class="spec-strip__val tabular" id="spec-reserve">72 小时</span>
+          </div>
+          <div>
+            <span class="spec-strip__label">典藏配额</span>
+            <span class="spec-strip__val tabular" id="spec-limit">全球 50 枚</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 下半部：策展文献注疏与私人沙龙鉴赏预约 -->
+    <section class="archive-row" aria-label="工艺档案与私人沙龙预约">
+      <div class="archive-cell">
+        <span class="eyebrow">CURATORIAL NOTE · 策展人手记</span>
+        <h2 style="font-family: var(--font-display); font-size: 30px; font-weight: 400; margin: 12px 0 20px;">
+          当机械机芯卸下表盘的遮蔽，时间便成为可见的雕塑。
+        </h2>
+        <div style="border-top: var(--hairline); font-size: 14px;">
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: var(--hairline);">
+            <span style="color: var(--text-secondary);">倒角打磨工时</span>
+            <span class="tabular">每枚夹板逾 45 小时手工黄杨木抛光</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: var(--hairline);">
+            <span style="color: var(--text-secondary);">日内瓦印记认证</span>
+            <span>全数通过 12 项严苛走时与修饰基准</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: var(--hairline);">
+            <span style="color: var(--text-secondary);">巡展场馆</span>
+            <span>上海外滩源壹号 · 二层静谧沙龙厅</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 私人沙龙预约表单 -->
+      <div class="archive-cell" style="background: var(--surface);">
+        <span class="eyebrow">PRIVATE SALON · 预约专属鉴赏时段</span>
+        <h2 style="font-family: var(--font-display); font-size: 28px; font-weight: 400; margin: 12px 0 20px;">
+          由独立制表师为您呈献一对一机芯品鉴
+        </h2>
+
+        <form id="salon-form" style="display: grid; gap: 16px;" novalidate>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div>
+              <label for="guest-name" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">阁下称呼</label>
+              <input id="guest-name" type="text" class="input-luxury" placeholder="例如：林先生 / Ms. Chen" required>
+            </div>
+            <div>
+              <label for="salon-city" style="display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 6px;">鉴赏沙龙所在地</label>
+              <select id="salon-city" class="input-luxury">
+                <option value="上海外滩源壹号">上海 · 外滩源壹号沙龙</option>
+                <option value="北京王府中环">北京 · 王府中环尊邸</option>
+                <option value="巴黎芳登广场">巴黎 · Place Vendôme 13号</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-top: 8px;">
+            <button type="submit" class="btn-luxury btn-luxury--primary">
+              生成私人邀请函编号
+            </button>
+            <span id="salon-feedback" style="font-size: 13px; color: var(--gold);" role="status" aria-live="polite"></span>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // 材质版本切换
+    document.querySelectorAll('.edition-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.edition-btn').forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+        document.getElementById('fig-code').textContent = btn.dataset.fig;
+        document.getElementById('spec-calibre').textContent = btn.dataset.calibre;
+        document.getElementById('spec-reserve').textContent = btn.dataset.reserve;
+        document.getElementById('spec-limit').textContent = btn.dataset.limit;
+        const color = btn.dataset.stroke;
+        document.querySelectorAll('#watch-svg [stroke]').forEach(el => el.setAttribute('stroke', color));
+      });
+    });
+
+    // 预约提交
+    document.getElementById('salon-form').addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('guest-name').value.trim() || '尊宾';
+      const city = document.getElementById('salon-city').value;
+      document.getElementById('salon-feedback').textContent = `✓ 已为 ${name} 预留「${city}」专属鉴赏席位（编号 #MV-2026-089）`;
+    });
+
+    // 丝绒夜 / 羊皮昼 切换
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+    });
+  </script>
+</body>
+</html>

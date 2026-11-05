@@ -1,14 +1,14 @@
 {
   "name": "claude-ui-marketplace",
-  "owner": { "name": "齐天大圣123", "url": "https://github.com/Atomorrow123" },
+  "owner": { "name": "齐天大圣123 & Antigravity Agent", "url": "https://github.com/Atomorrow123" },
   "plugins": [
     {
       "name": "claude-ui",
       "source": "./",
-      "description": "An adaptive frontend UI building guide anchored on Claude's editorial discipline, featuring 12 iconic brand precedents, a 12-industry adaptive matrix, and interactive style samples.",
+      "description": "UI Ultra Project: An adaptive frontend UI building guide anchored on Claude's editorial discipline, featuring 12 iconic brand precedents, a 12-industry adaptive matrix, and interactive style samples.",
       "version": "1.2.0",
-      "author": { "name": "齐天大圣123 & Claude Code" },
-      "homepage": "https://github.com/Atomorrow123/Claude-ui"
+      "author": { "name": "齐天大圣123 & Antigravity Agent" },
+      "homepage": "https://github.com/Atomorrow123/UI-Ultra-Project"
     }
   ]
 }

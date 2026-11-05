@@ -1,10 +1,10 @@
 {
   "name": "claude-ui",
   "version": "1.2.0",
-  "description": "An adaptive frontend UI building guide anchored on Claude's editorial discipline, featuring 12 iconic brand precedents (Apple, Nike, McDonald's, Cartier, Aesop, Linear, etc.), a 12-industry adaptive matrix, and ready-to-use code samples.",
-  "author": { "name": "齐天大圣123 & Claude Code", "url": "https://github.com/Atomorrow123" },
-  "homepage": "https://github.com/Atomorrow123/Claude-ui",
-  "repository": "https://github.com/Atomorrow123/Claude-ui",
+  "description": "UI Ultra Project: An adaptive frontend UI building guide anchored on Claude's editorial discipline, featuring 12 iconic brand precedents (Apple, Nike, McDonald's, Cartier, Aesop, Linear, etc.), a 12-industry adaptive matrix, and ready-to-use code samples.",
+  "author": { "name": "齐天大圣123 & Antigravity Agent", "url": "https://github.com/Atomorrow123" },
+  "homepage": "https://github.com/Atomorrow123/UI-Ultra-Project",
+  "repository": "https://github.com/Atomorrow123/UI-Ultra-Project",
   "keywords": ["ui", "design", "frontend", "design-tokens", "adaptive-style", "brand-precedents", "css", "skill"],
   "license": "MIT"
 }
