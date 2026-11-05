@@ -2,9 +2,9 @@
   <img src="assets/logo.svg" width="96" alt="Claude UI logo">
 </p>
 
-<h1 align="center">Claude UI</h1>
+<h1 align="center">Claude UI (v1.2)</h1>
 
-<p align="center">一套有明确审美立场的前端 UI 构建指南 · 适用于任何支持 Agent Skills 的 AI 编程助手</p>
+<p align="center">以 Claude 秩序美学为底座、支持全行业自适应变形与殿堂级品牌先例借镜的前端 UI 构建指南</p>
 
 <p align="center">
   <a href="https://github.com/Atomorrow123/Claude-ui">GitHub</a> ·
@@ -16,28 +16,34 @@
   <img src="assets/showcase-folio.jpg" width="100%" alt="Claude UI 构建效果预览：墨迹 Folio 深度写作工作台">
 </p>
 <p align="center">
-  <sub>▲ 使用 Claude UI（默认方向 A · Warm Editorial Minimal）直出的真实中文产品落地页效果</sub>
+  <sub>▲ 使用 Claude UI（默认方向 01 · Warm Editorial Minimal）直出的真实中文产品落地页效果</sub>
 </p>
 
 ---
 
 ## 这是什么
 
-Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格式）。安装后，当你让 AI 助手"做个好看的页面""优化 UI""去掉 AI 味"时，它会自动加载这套指南，按以下流程工作：
+Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格式）。它采用 **「底层秩序守恒 + 表层万象自适应」** 的双层架构：
 
-**设计简报 → Token 先行 → 灰度骨架 → 组件与全部状态 → 打磨 → 自检清单**
+- **底层（Claude DNA）**：守住语义化 Token、排版亲密性、对齐线、精致中西混排、WCAG 对比度与完整交互状态，彻底杜绝廉价的“AI 紫蓝发光模板味”。
+- **表层（全行业自适应引擎）**：彻底放开呆板限制，向 **Apple、Nike、McDonald's、Cartier、Aesop、Linear、Stripe、Airbnb、MoMA、Duolingo** 等 12 个殿堂级品牌先例汲取行业灵魂，覆盖 **食品、科技、艺术、哲学出版、服装奢品、生活服务、教育、金融、电商、流媒体、出行工业、公共服务** 12 大前端方向。
+
+精简后的三步闭环工作流：
+**定向与先例锚定（3 行简报） → Token 调谐与结构搭建（6 大旋钮） → 状态补齐与渲染核验**
 
 包含内容：
 
 | 文件 | 内容 |
 |---|---|
-| `SKILL.md` | 核心信条、任务分级工作流与审查模式、排版/色彩/间距/响应式/动效规范、中文排版、可访问性、文案与数据、反 AI 味清单、交付自检清单 |
-| `references/tokens.css` | OKLCH 设计 token 模板（`light-dark()` 亮/暗模式、图表调色板、Tailwind v4 与 shadcn/ui 映射） |
-| `references/aesthetic-directions.md` | 6 种审美方向：Claude 原生、编辑排版、瑞士极简、暗色精密、柔和亲和、新粗野主义（含对比度校验说明） |
-| `references/components.md` | 17 类组件配方：按钮、表单、选择控件、卡片、导航、Tabs、下拉菜单、Tooltip、表格、分页、弹窗、Toast、空状态、徽标/Kbd、头像、进度、骨架屏、命令面板、Hero |
-| `references/data-viz.md` | 数据可视化与仪表盘规范：布局层级、KPI 卡、图表选型、配色、去 chart junk、数字格式化 |
-| `references/ux-writing.md` | 中文界面文案指南：语气、标点与中西混排、按钮/报错/空状态文案、真实感数据 |
-| `references/anti-patterns.md` | 26 条"AI 味"与中英混排常见反模式及替代方案 |
+| `skills/claude-ui/SKILL.md` | 核心双层法则（底层不变量 vs. 放宽的风格自由度）、极简 3 步工作流、12 大行业自适应速查表、中文排版与反 AI 味红线 |
+| `skills/claude-ui/references/aesthetic-directions.md` | **12 大知名品牌先例深度拆解**（Apple / Nike / McDonald's / Cartier / Aesop / Linear 等）+ **12 大前端行业全景适配矩阵** |
+| `skills/claude-ui/references/style-samples.md` | **8 大跨行业实战代码样本库**（含设计锚点、Token 覆写与可直接复用的 HTML/CSS 行业微件） |
+| `skills/claude-ui/examples/style-showcase.html` | **单文件可交互风格画廊**：双击即可在浏览器实时切换体验 8 种截然不同的行业与品牌风格 |
+| `skills/claude-ui/references/tokens.css` | OKLCH 设计 Token 引擎，内置 **9 套 `data-style` 行业预设**、自适应物理触感变量与 `light-dark()` 双模 |
+| `skills/claude-ui/references/components.md` | 17 类组件配方与跨行业变体（含高定 `0px` 直角按钮、游戏化 `4px` 物理按压题卡、6 种行业 Hero 构图） |
+| `skills/claude-ui/references/data-viz.md` | 数据可视化与仪表盘规范：布局层级、KPI 卡、图表选型、配色、去 chart junk、数字格式化 |
+| `skills/claude-ui/references/ux-writing.md` | 中文界面文案指南：语气、标点与中西混排、按钮/报错/空状态文案、真实感数据 |
+| `skills/claude-ui/references/anti-patterns.md` | 27 条反模式详解：如何区分“廉价 AI 套路”与“有意图的品牌风格化” |
 
 ---
 
@@ -45,14 +51,10 @@ Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格
 
 ### 方式一：安装脚本（推荐，自动识别已装的 Agent）
 
-先获取代码：
-
 ```bash
 git clone https://github.com/Atomorrow123/Claude-ui.git
 cd Claude-ui
 ```
-
-或从 [Releases](https://github.com/Atomorrow123/Claude-ui/releases) 下载 `claude-ui-<version>.zip` 解压。然后：
 
 ```powershell
 # Windows
@@ -70,29 +72,13 @@ cd Claude-ui
 ./install.sh --uninstall               # 卸载
 ```
 
-支持的 Agent 与安装位置：
-
-| Agent | 用户级 | 项目级 |
-|---|---|---|
-| Claude Code | `~/.claude/skills/claude-ui` | `.claude/skills/claude-ui` |
-| OpenAI Codex | `~/.codex/skills/claude-ui` | `.codex/skills/claude-ui` |
-| Cursor | `~/.cursor/skills/claude-ui` | `.cursor/skills/claude-ui` |
-| Gemini CLI | `~/.gemini/skills/claude-ui` | `.gemini/skills/claude-ui` |
-| Antigravity | `~/.gemini/config/plugins/claude-ui`（插件） | `.agents/skills/claude-ui` |
-| 通用 (`.agents`) | `~/.agents/skills/claude-ui` | `.agents/skills/claude-ui` |
-
-自定义路径：`./install.ps1 -Dest <skills目录>` / `./install.sh --dest <skills目录>`
-
 ### 方式二：各平台原生插件机制
-
-本仓库同时是以下格式的合法包：
 
 **Claude Code 插件市场**
 ```bash
 claude plugin marketplace add Atomorrow123/Claude-ui
 claude plugin install claude-ui@claude-ui-marketplace
 ```
-或在 Claude Code 内：`/plugin marketplace add Atomorrow123/Claude-ui`
 
 **Gemini CLI 扩展**
 ```bash
@@ -103,26 +89,18 @@ gemini extensions install https://github.com/Atomorrow123/Claude-ui
 ```powershell
 git clone https://github.com/Atomorrow123/Claude-ui.git; cd Claude-ui; ./install.ps1 -Agent antigravity
 ```
-（即复制到 `~/.gemini/config/plugins/claude-ui/`），然后重启 Antigravity。
-
-**Claude.ai / Claude 桌面版**
-从 [Releases](https://github.com/Atomorrow123/Claude-ui/releases) 下载 `claude-ui-skill.zip`，在 *Settings → Capabilities → Skills* 上传。
-
-### 方式三：手动
-
-把 `skills/claude-ui/` 整个文件夹复制到你的 Agent 的 skills 目录即可。
-不支持 Skills 的工具（如部分 IDE 助手）：把 `SKILL.md` 内容粘贴进其规则文件（`AGENTS.md`、`.cursorrules`、`.windsurfrules`、`.github/copilot-instructions.md` 等）。
 
 ---
 
-## 使用
+## 使用示例
 
-安装并重启 Agent 后，直接说：
+安装并重启 Agent 后，直接描述你的目标行业或参考品牌：
 
-- "用 Claude UI 给我做一个 AI 写作工具的落地页"
-- "按 Claude UI 的自检清单审查当前页面"
-- "这个后台太丑了，帮我按瑞士极简方向重构"
-- "给项目生成一套亮/暗模式的设计 token"
+- "用 Claude UI 给我做一个 AI 写作与哲学文献工作台的落地页"
+- "参考麦当劳（Turner Duckworth）和 Shake Shack 的风格，做一个汉堡与轻食点单页面"
+- "参考 Cartier 和高定画册风格，做一个机械腕表典藏展陈与私人沙龙预约页"
+- "参考 Nike SNKRS 的视觉张力，做一个碳板跑鞋首发与尺码抢购页"
+- "参考 MoMA 和巴塞尔艺术展的外露瑞士网格，做一个当代建筑展览档案页"
 
 ---
 
@@ -131,33 +109,6 @@ git clone https://github.com/Atomorrow123/Claude-ui.git; cd Claude-ui; ./install
 ```powershell
 ./build.ps1   # 生成 dist/claude-ui-<version>.zip（完整包）和 dist/claude-ui-skill.zip（仅技能）
 ```
-
-## 目录结构
-
-```
-claude-ui/
-├── .claude-plugin/
-│   ├── plugin.json          # Claude Code 插件清单
-│   └── marketplace.json     # Claude Code 自托管市场
-├── plugin.json              # Antigravity 插件清单
-├── gemini-extension.json    # Gemini CLI 扩展清单
-├── assets/
-│   ├── logo.svg
-│   └── showcase-folio.jpg   # 首页构建效果展示图
-├── skills/claude-ui/        # ← 技能本体（唯一事实来源）
-│   ├── SKILL.md
-│   └── references/
-├── install.ps1 / install.sh # 跨 Agent 安装脚本
-├── build.ps1                # 打包脚本
-└── LICENSE
-```
-
-## 作者
-
-- **齐天大圣123** — [@Atomorrow123](https://github.com/Atomorrow123)
-- **Claude Code**
-
-欢迎提 [Issue](https://github.com/Atomorrow123/Claude-ui/issues) 和 PR。
 
 ## License
 

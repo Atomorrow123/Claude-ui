@@ -9,7 +9,7 @@
 
 ## 按钮 Button
 
-**层级**：Primary（每视图 1 个）› Secondary › Ghost › Link；Danger 独立。
+**层级**：Primary（每个独立任务区 / 独立商品卡聚焦 1 个）› Secondary › Ghost › Link；Danger 独立。
 **尺寸**：sm 32px / md 40px / lg 48px 高；水平内边距 ≈ 高度 × 0.4。
 
 ```css
@@ -19,12 +19,15 @@
   font: var(--weight-medium) var(--text-sm)/1.2 var(--font-body);
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
+  border-bottom-width: calc(1px + var(--btn-depth, 0px)); /* 支持游戏化/教育 3D 物理底边厚度 */
   cursor: pointer; white-space: nowrap;
   transition: background-color var(--duration-fast) var(--ease-out),
               border-color var(--duration-fast) var(--ease-out),
               transform var(--duration-fast) var(--ease-out);
 }
-.btn:active:not(:disabled) { transform: scale(0.98); }
+.btn:active:not(:disabled) {
+  transform: translateY(calc(var(--btn-depth, 0px) * 0.5)) scale(0.98);
+}
 .btn:disabled, .btn[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
 
 .btn-primary   { background: var(--accent); color: var(--text-on-accent); }
@@ -39,6 +42,10 @@
 .btn-danger    { background: var(--danger); color: var(--text-on-danger); }
 
 .btn-icon      { min-height: 0; width: 40px; height: 40px; padding: 0; }   /* 正方形图标按钮 */
+
+/* 行业风格变体（按需搭配 tokens.css 的 data-style 预设） */
+.btn-luxury    { border-radius: 0; letter-spacing: 0.14em; text-transform: uppercase; font-size: var(--text-xs); }
+.btn-pill      { border-radius: var(--radius-full); font-weight: var(--weight-semibold); }
 
 /* 强制颜色模式下透明边框会变为可见边界，保证按钮轮廓不丢 */
 @media (forced-colors: active) { .btn { border-color: ButtonText; } }
@@ -427,12 +434,15 @@ kbd {
 
 ---
 
-## Hero 区块（落地页）
+## Hero 区块（跨行业落地页开场）
 
-不要默认 "居中标题 + 副标题 + 两个按钮 + 渐变背景"。可选结构：
-1. **左文右图**：7/5 分栏，标题左对齐，右侧放真实产品截图（带细边框与轻阴影，略微倾斜或裁切出画）。
-2. **超大字排版**：标题占满宽度（`--text-4xl` 以上），下方一行说明 + 一个按钮，无图。
-3. **产品即 Hero**：短标题 + 直接嵌入可交互的产品演示。
+不要默认 "居中标题 + 副标题 + 两个按钮 + 紫蓝渐变背景"。根据目标行业选择对应的先例构图（代码见 [style-samples.md](style-samples.md)）：
+1. **产品即 Hero（AI / 科技 / 效率工具）**：5/7 分栏，左文右工作台，右侧直接嵌入**可真实交互的审阅台、代码沙盒或费率计算器**。
+2. **微距硬件与 Bento 叙事（Apple 风 / 智能硬件）**：全宽居中紧凑负字距大标题 + 微距硬件主图 + 下方 3–4 张不等宽 Bento 核心参数卡片。
+3. **食欲波普与规格快选（McDonald's 风 / 餐饮快消）**：暖奶油或高明度品牌色画布，左侧诱人餐品主图，右侧直给规格胶囊快选与暖金加购大按钮。
+4. **展柜剧场与中轴对称（Cartier 风 / 时尚奢品）**：深邃黑或香槟白画布，极小号宽字距大写眉标 + 高对比古典衬线大标题 + 1px 金属细线三栏典藏参数 + `0px` 直角预约按钮。
+5. **竞技海报与尺码矩阵（Nike 风 / 运动潮流）**：`--text-5xl` 超粗浓缩大写标题破格排版 + 实时发售尺码选择矩阵（Size Matrix）。
+6. **外露网格与馆藏展签（MoMA 风 / 艺术与哲学出版）**：`1px solid` 贯穿实线网格将首屏切分为“展览导言 + 展品原件卡片（`FIG. 01`）+ 展期导览”。
 
-标题写具体价值，不写口号："把会议录音变成可搜索的笔记" 优于 "释放团队的无限潜能"。
-Hero 图片是 LCP 元素：`fetchpriority="high"`、不要懒加载、给出 `width`/`height`。
+标题写具体价值与感官事实，不写空洞口号："双层厚切安格斯，每一口都汁水丰盈" 或 "把零散摘录打磨成有据可查的长文" 远优于 "开启智能新时代"。
+Hero 主图是 LCP 元素：`fetchpriority="high"`、不要懒加载、显式给出 `width`/`height`。

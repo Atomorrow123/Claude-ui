@@ -45,18 +45,21 @@ function Install-To([string]$dir, [string]$label, [bool]$asPlugin) {
     else { Write-Host "  · skipped  $label (not installed)" -ForegroundColor DarkGray }
     return
   }
-  if (Test-Path $target) { Remove-Item -Recurse -Force $target }
+  if (Test-Path $target) {
+    try { Remove-Item -Recurse -Force $target -ErrorAction Stop }
+    catch { Get-ChildItem -Path $target -Recurse -File | Remove-Item -Force -ErrorAction SilentlyContinue }
+  }
   New-Item -ItemType Directory -Force $target | Out-Null
   if ($asPlugin) {
     # Antigravity plugin bundle: manifest + logo + skills
-    Copy-Item (Join-Path $Root 'plugin.json') $target
-    Copy-Item (Join-Path $Root 'README.md')   $target -ErrorAction SilentlyContinue
+    Copy-Item -Force (Join-Path $Root 'plugin.json') $target
+    Copy-Item -Force (Join-Path $Root 'README.md')   $target -ErrorAction SilentlyContinue
     New-Item -ItemType Directory -Force (Join-Path $target 'assets') | Out-Null
-    Copy-Item (Join-Path $Root 'assets\logo.svg') (Join-Path $target 'assets\logo.svg')
+    Copy-Item -Force (Join-Path $Root 'assets\logo.svg') (Join-Path $target 'assets\logo.svg')
     New-Item -ItemType Directory -Force (Join-Path $target 'skills') | Out-Null
-    Copy-Item -Recurse $Skill (Join-Path $target 'skills')
+    Copy-Item -Recurse -Force $Skill (Join-Path $target 'skills')
   } else {
-    Copy-Item -Recurse "$Skill\*" $target
+    Copy-Item -Recurse -Force "$Skill\*" $target
   }
   Write-Host "  + installed $label -> $target" -ForegroundColor Green
 }

@@ -1,35 +1,35 @@
 /* ==========================================================================
-   Claude UI · Design Tokens 起始模板 (v1.1)
-   默认方向："Claude 原生"（暖米白 + 赤陶强调 + 衬线标题）
-   - 换肤：改 §1 的色相 与 §3 的字体即可。
-   - 暗色：语义色统一用 light-dark()，自动跟随 color-scheme；手动切换见 §9。
-   - 对比度：下方注释中的比值均为在 --bg / --surface 上的近似值，改色后请复测。
+   Claude UI · 自适应设计 Token 引擎 (v1.2)
+   - 默认基底："Claude 原生"（暖米白 + 赤陶强调 + 衬线标题）
+   - 行业自适应：在 <html> 或局部容器设置 data-style="<preset>" 即可一键切换
+     支持预设：editorial | apple-tech | dark-precision | joyful-food |
+              haute-luxury | kinetic-sport | art-gallery | earthy-service | playful-edu
+   - 暗色模式：语义色统一用 light-dark()，自动跟随系统或手动切换。
    ========================================================================== */
 
 :root {
-  color-scheme: light dark; /* 必须保持 light dark，手动覆盖见 §9，不要写死 */
+  color-scheme: light dark;
 
   /* ---------- 1. 色彩原语 (OKLCH) ---------- */
-  --hue-brand: 40;          /* 赤陶。冷色项目可改为 250（蓝）/ 160（绿）等 */
-  --hue-neutral: 75;        /* 中性色偏暖；冷色项目改为与 brand 接近的色相 */
-  --chroma-neutral: 0.006;  /* 中性色带一点点色相，0 = 纯灰 */
+  --hue-brand: 40;          /* 赤陶基准色相；可通过行业预设覆写 */
+  --hue-neutral: 75;        /* 中性色偏暖；冷色科技项目可改为 250 */
+  --chroma-neutral: 0.006;  /* 中性色带微弱色相，0 = 纯灰 */
 
   /* 中性色阶（亮 → 暗） */
-  --gray-0:   oklch(99%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-0:   oklch(99%   var(--chroma-neutral) var(--hue-neutral));
   --gray-50:  oklch(97.5% var(--chroma-neutral) var(--hue-neutral));
-  --gray-100: oklch(95%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-200: oklch(91%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-300: oklch(85%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-400: oklch(72%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-500: oklch(58%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-600: oklch(48%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-700: oklch(38%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-800: oklch(28%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-900: oklch(21%  var(--chroma-neutral) var(--hue-neutral));
-  --gray-950: oklch(16%  var(--chroma-neutral) var(--hue-neutral));
+  --gray-100: oklch(95%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-200: oklch(91%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-300: oklch(85%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-400: oklch(72%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-500: oklch(58%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-600: oklch(48%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-700: oklch(38%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-800: oklch(28%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-900: oklch(21%   var(--chroma-neutral) var(--hue-neutral));
+  --gray-950: oklch(16%   var(--chroma-neutral) var(--hue-neutral));
 
-  /* 品牌色阶。注意：Claude 官网赤陶 #c96442 ≈ oklch(61% 0.14 40)，
-     白字在其上仅约 3.9:1，不满足小字号 AA；因此按钮底色取更深的 600（≈ 5.2:1）。 */
+  /* 品牌色阶（600 满足白字 AA 对比度 ≈ 5.2:1） */
   --brand-50:  oklch(96% 0.025 var(--hue-brand));
   --brand-100: oklch(92% 0.05  var(--hue-brand));
   --brand-400: oklch(68% 0.12  var(--hue-brand));
@@ -37,26 +37,26 @@
   --brand-600: oklch(54% 0.14  var(--hue-brand));
   --brand-700: oklch(47% 0.13  var(--hue-brand));
 
-  /* ---------- 2. 语义色（组件只引用这一层）light-dark(亮, 暗) ---------- */
-  --bg:             light-dark(oklch(98% 0.008 90),  oklch(19% 0.004 var(--hue-neutral))); /* 米白 ≈ #faf9f5 / ≈ #1f1e1d */
-  --surface:        light-dark(var(--gray-0),        oklch(23% 0.005 var(--hue-neutral))); /* 暗色：层级越高越亮 */
-  --surface-sunken: light-dark(var(--gray-100),      oklch(16% 0.004 var(--hue-neutral))); /* 输入框底、代码块、hover 底 */
-  --surface-raised: light-dark(var(--gray-0),        oklch(27% 0.006 var(--hue-neutral))); /* 弹窗 / 下拉 */
-  --border:         light-dark(oklch(20% 0.01 var(--hue-neutral) / 0.10), oklch(100% 0 0 / 0.09)); /* 装饰性分隔 */
+  /* ---------- 2. 语义色（组件只引用这一层） ---------- */
+  --bg:             light-dark(oklch(98% 0.008 90),  oklch(19% 0.004 var(--hue-neutral)));
+  --surface:        light-dark(var(--gray-0),        oklch(23% 0.005 var(--hue-neutral)));
+  --surface-sunken: light-dark(var(--gray-100),      oklch(16% 0.004 var(--hue-neutral)));
+  --surface-raised: light-dark(var(--gray-0),        oklch(27% 0.006 var(--hue-neutral)));
+  --border:         light-dark(oklch(20% 0.01 var(--hue-neutral) / 0.10), oklch(100% 0 0 / 0.09));
   --border-strong:  light-dark(oklch(20% 0.01 var(--hue-neutral) / 0.18), oklch(100% 0 0 / 0.16));
-  --border-input:   light-dark(oklch(62% 0.008 var(--hue-neutral)), oklch(54% 0.008 var(--hue-neutral))); /* 表单控件边界 ≥ 3:1（WCAG 1.4.11） */
+  --border-input:   light-dark(oklch(62% 0.008 var(--hue-neutral)), oklch(54% 0.008 var(--hue-neutral))); /* ≥ 3:1 */
 
-  --text:           light-dark(var(--gray-950), oklch(93% 0.006 var(--hue-neutral))); /* 近黑 / 非纯白 */
-  --text-secondary: light-dark(var(--gray-600), oklch(72% 0.006 var(--hue-neutral))); /* ≈ 6:1 / 7:1 */
-  --text-tertiary:  light-dark(var(--gray-500), oklch(58% 0.006 var(--hue-neutral))); /* ≈ 4:1，仅占位/禁用/大字元信息 */
+  --text:           light-dark(var(--gray-950), oklch(93% 0.006 var(--hue-neutral)));
+  --text-secondary: light-dark(var(--gray-600), oklch(72% 0.006 var(--hue-neutral)));
+  --text-tertiary:  light-dark(var(--gray-500), oklch(58% 0.006 var(--hue-neutral)));
 
-  --accent:         light-dark(var(--brand-600), oklch(68% 0.12 var(--hue-brand)));  /* 暗色：提亮、降饱和 */
+  --accent:         light-dark(var(--brand-600), oklch(68% 0.12 var(--hue-brand)));
   --accent-hover:   light-dark(var(--brand-700), oklch(74% 0.11 var(--hue-brand)));
-  --accent-subtle:  light-dark(var(--brand-50),  oklch(68% 0.12 var(--hue-brand) / 0.14)); /* 选中背景、徽标底 */
+  --accent-subtle:  light-dark(var(--brand-50),  oklch(68% 0.12 var(--hue-brand) / 0.14));
   --text-on-accent: light-dark(oklch(99% 0.005 var(--hue-brand)), oklch(18% 0.01 var(--hue-brand)));
   --focus-ring:     light-dark(var(--brand-500), var(--brand-400));
 
-  /* 状态色：亮色下可直接作文字（≥ 4.5:1），暗色下提亮 */
+  /* 状态色 */
   --success: light-dark(oklch(52% 0.12 150), oklch(74% 0.13 150));
   --warning: light-dark(oklch(55% 0.12 70),  oklch(80% 0.13 80));
   --danger:  light-dark(oklch(53% 0.18 27),  oklch(70% 0.16 25));
@@ -68,78 +68,85 @@
   --danger-subtle:  color-mix(in oklab, var(--danger) 12%, transparent);
   --info-subtle:    color-mix(in oklab, var(--info) 12%, transparent);
 
-  /* 图表分类色：同明度、错开色相；对背景 ≥ 3:1。顺序即使用优先级，见 data-viz.md */
+  /* 图表分类色（同明度、错开色相，对背景 ≥ 3:1） */
   --chart-1: light-dark(oklch(58% 0.13 var(--hue-brand)), oklch(72% 0.12 var(--hue-brand)));
   --chart-2: light-dark(oklch(58% 0.11 250), oklch(72% 0.10 250));
   --chart-3: light-dark(oklch(58% 0.11 160), oklch(72% 0.11 160));
   --chart-4: light-dark(oklch(62% 0.12 85),  oklch(78% 0.12 85));
   --chart-5: light-dark(oklch(56% 0.11 320), oklch(72% 0.10 320));
   --chart-6: light-dark(oklch(58% 0.09 205), oklch(74% 0.09 205));
-  --chart-muted: light-dark(var(--gray-300), oklch(38% 0.006 var(--hue-neutral))); /* 非高亮系列、对比基线 */
+  --chart-muted: light-dark(var(--gray-300), oklch(38% 0.006 var(--hue-neutral)));
   --chart-grid:  var(--border);
 
-  /* ---------- 3. 字体 ---------- */
-  --font-sans:  "Inter", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
-  --font-serif: "Source Serif 4", "Newsreader", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
-  --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
+  /* ---------- 3. 字体栈（西文在前，中文无衬线/衬线回退在后） ---------- */
+  --font-sans:      "Inter", "Geist", "Plus Jakarta Sans", "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-serif:     "Source Serif 4", "Newsreader", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --font-luxury:    "Cormorant Garamond", "Playfair Display", "Bodoni Moda", "Noto Serif SC", "Songti SC", Georgia, serif;
+  --font-condensed: "Oswald", "Anton", "Impact", "HarmonyOS Sans SC", "PingFang SC", "Noto Sans SC", sans-serif;
+  --font-rounded:   "Fredoka", "Nunito", "Figtree", "HarmonyOS Sans SC", "PingFang SC", "Noto Sans SC", sans-serif;
+  --font-mono:      "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
 
-  --font-display: var(--font-serif); /* 标题字体；瑞士/暗色精密方向改为 --font-sans */
+  --font-display: var(--font-serif);
   --font-body:    var(--font-sans);
 
-  /* 字号阶梯 (1.25) */
-  --text-xs:   0.75rem;    /* 12 */
-  --text-sm:   0.875rem;   /* 14 */
-  --text-base: 1rem;       /* 16 */
-  --text-lg:   1.25rem;    /* 20 */
-  --text-xl:   1.5625rem;  /* 25 */
-  --text-2xl:  1.9375rem;  /* 31 */
-  --text-3xl:  2.4375rem;  /* 39 */
-  --text-4xl:  clamp(2.5rem, 1.6rem + 3.6vw, 4rem); /* 40 → 64 流体 */
+  /* 字号阶梯 (默认 1.25，海报展示字支持更大流体区间) */
+  --text-xs:   0.75rem;    /* 12px */
+  --text-sm:   0.875rem;   /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg:   1.25rem;    /* 20px */
+  --text-xl:   1.5625rem;  /* 25px */
+  --text-2xl:  1.9375rem;  /* 31px */
+  --text-3xl:  2.4375rem;  /* 39px */
+  --text-4xl:  clamp(2.5rem, 1.6rem + 3.6vw, 4.25rem);   /* 40 → 68px 常规 Hero */
+  --text-5xl:  clamp(3.2rem, 2rem + 5.5vw, 6.5rem);      /* 51 → 104px 海报/奢品/策展超大字 */
 
-  --leading-tight: 1.15;
+  --leading-tight: 1.12;
   --leading-snug:  1.35;
   --leading-body:  1.6;
   --leading-cjk:   1.75;
 
-  --tracking-tight: -0.02em;
-  --tracking-wide:  0.06em;
+  --tracking-tight:  -0.025em;
+  --tracking-wide:    0.06em;
+  --tracking-luxury:  0.18em;
 
-  --weight-regular: 400;
-  --weight-medium:  500;
+  --weight-regular:  400;
+  --weight-medium:   500;
   --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-black:    900;
 
   /* ---------- 4. 间距（4px 基准） ---------- */
-  --space-1: 0.25rem;  /* 4 */
-  --space-2: 0.5rem;   /* 8 */
-  --space-3: 0.75rem;  /* 12 */
-  --space-4: 1rem;     /* 16 */
-  --space-5: 1.25rem;  /* 20 */
-  --space-6: 1.5rem;   /* 24 */
-  --space-8: 2rem;     /* 32 */
-  --space-10: 2.5rem;  /* 40 */
-  --space-12: 3rem;    /* 48 */
-  --space-16: 4rem;    /* 64 */
-  --space-20: 5rem;    /* 80 */
-  --space-24: 6rem;    /* 96 */
-  --space-32: 8rem;    /* 128 */
+  --space-1:  0.25rem;  /* 4 */
+  --space-2:  0.5rem;   /* 8 */
+  --space-3:  0.75rem;  /* 12 */
+  --space-4:  1rem;     /* 16 */
+  --space-5:  1.25rem;  /* 20 */
+  --space-6:  1.5rem;   /* 24 */
+  --space-8:  2rem;     /* 32 */
+  --space-10: 2.5rem;   /* 40 */
+  --space-12: 3rem;     /* 48 */
+  --space-16: 4rem;     /* 64 */
+  --space-20: 5rem;     /* 80 */
+  --space-24: 6rem;     /* 96 */
+  --space-32: 8rem;     /* 128 */
 
-  /* 流体间距：页面边距与区块间距随视口平滑变化，避免断点处跳变 */
-  --gutter:        clamp(1rem, 0.5rem + 2.5vw, 2.5rem);  /* 16 → 40 页面左右边距 */
-  --space-section: clamp(4rem, 2rem + 6vw, 8rem);        /* 64 → 128 区块间距 */
+  --gutter:        clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --space-section: clamp(4rem, 2rem + 6vw, 8rem);
 
-  --container: 1200px;
+  --container:       1200px;
   --container-prose: 720px;
-  --measure: 65ch;
+  --measure:         65ch;
 
-  /* ---------- 5. 圆角（xs 仅用于 kbd/小徽标；嵌套：内 = 外 − padding） ---------- */
-  --radius-xs: 4px;
-  --radius-sm: 8px;    /* 按钮、输入框 */
-  --radius-md: 12px;   /* 小卡片、下拉菜单 */
-  --radius-lg: 16px;   /* 卡片 */
-  --radius-xl: 24px;   /* 弹窗、大容器 */
+  /* ---------- 5. 圆角与物理触感旋钮 ---------- */
+  --radius-xs:   4px;
+  --radius-sm:   8px;    /* 按钮、输入框 */
+  --radius-md:   12px;   /* 小卡片、下拉菜单 */
+  --radius-lg:   16px;   /* 卡片 */
+  --radius-xl:   24px;   /* 弹窗、大容器 */
   --radius-full: 9999px;
+  --btn-depth:   0px;    /* 3D 物理按键底边厚度（教育/游戏化设为 4px） */
 
-  /* ---------- 6. 阴影（分层 + 带色相；暗色下自动换成黑色） ---------- */
+  /* ---------- 6. 阴影 ---------- */
   --shadow-base: light-dark(oklch(30% 0.02 var(--hue-neutral)), oklch(0% 0 0));
   --shadow-sm: 0 1px 2px color-mix(in oklab, var(--shadow-base) 6%, transparent);
   --shadow-md: 0 1px 2px color-mix(in oklab, var(--shadow-base) 5%, transparent),
@@ -152,10 +159,11 @@
   /* ---------- 7. 动效 ---------- */
   --duration-fast: 120ms;
   --duration-base: 200ms;
-  --duration-slow: 320ms;
-  --ease-out:    cubic-bezier(0.2, 0, 0, 1);
-  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
-  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-slow: 360ms;
+  --ease-out:      cubic-bezier(0.2, 0, 0, 1);
+  --ease-in:       cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring:   cubic-bezier(0.34, 1.35, 0.64, 1);
+  --ease-theater:  cubic-bezier(0.16, 1, 0.3, 1);
 
   /* ---------- 8. 层级 ---------- */
   --z-dropdown: 100;
@@ -163,82 +171,195 @@
   --z-overlay:  300;
   --z-modal:    400;
   --z-toast:    500;
-  /* 注：<dialog> 与 [popover] 位于 top layer，不需要 z-index */
 
-  /* 原生控件（checkbox / radio / range / progress）跟随品牌色 */
   accent-color: var(--accent);
 }
 
-/* ---------- 9. 手动切换亮/暗（可选） ----------
-   默认跟随系统，绝大多数站点不需要常驻切换按钮（放在设置页即可）。
-   推荐方式：改 <meta name="color-scheme"> 的 content，CSS 映射回 color-scheme：
-     <meta name="color-scheme" content="light dark">
-     <script>document.querySelector('meta[name="color-scheme"]').content =
-       localStorage.getItem("color-scheme") ?? "light dark";</script>   ← 放在 meta 后，防闪烁
-   框架里不便改 meta 时，也可在 <html> 上设 data-theme="light|dark"。 */
+/* ==========================================================================
+   9. 行业与品牌自适应预设 (Adaptive Style Presets)
+   用法：<html data-style="joyful-food"> 或局部 <section data-style="haute-luxury">
+   ========================================================================== */
+
+/* 预设 A：Apple 光学精密（消费电子 / 智能硬件 / 旗舰科技） */
+[data-style="apple-tech"] {
+  --font-display: var(--font-sans);
+  --bg:             light-dark(#ffffff, #000000);
+  --surface:        light-dark(#f5f5f7, #1d1d1f);
+  --surface-sunken: light-dark(#e8e8ed, #111113);
+  --text:           light-dark(#1d1d1f, #f5f5f7);
+  --text-secondary: light-dark(#6e6e73, #86868b);
+  --accent:         light-dark(#0071e3, #2997ff);
+  --accent-hover:   light-dark(#0077ed, #47a9ff);
+  --text-on-accent: #ffffff;
+  --radius-sm:      9999px; /* 胶囊按钮 */
+  --radius-lg:      24px;   /* Bento 大圆角容器 */
+  --duration-base:  320ms;
+  --ease-out:       cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* 预设 B：Linear 暗色工程精密（开发者工具 / AI 基础设施 / SaaS） */
+[data-style="dark-precision"] {
+  color-scheme: dark;
+  --font-display:   var(--font-sans);
+  --bg:             #08090a;
+  --surface:        #111215;
+  --surface-sunken: #0c0d0f;
+  --surface-raised: #181a1f;
+  --border:         rgba(255, 255, 255, 0.08);
+  --border-strong:  rgba(255, 255, 255, 0.15);
+  --text:           #f2f3f5;
+  --text-secondary: #8a8f98;
+  --text-tertiary:  #5c6068;
+  --accent:         #5e6ad2;
+  --accent-hover:   #6e7ae2;
+  --text-on-accent: #ffffff;
+  --radius-sm:      6px;
+  --radius-lg:      10px;
+  --duration-base:  140ms;
+}
+
+/* 预设 C：McDonald's / Shake Shack 食欲波普（餐饮 / 快消 / 烘焙茶饮 / 生鲜） */
+[data-style="joyful-food"] {
+  --font-display:   var(--font-rounded);
+  --font-body:      var(--font-rounded);
+  --bg:             light-dark(#fffdf7, #1c1613);
+  --surface:        light-dark(#ffffff, #261e1a);
+  --surface-sunken: light-dark(#fff4d6, #332720);
+  --text:           light-dark(#27251f, #f9f5eb);
+  --text-secondary: light-dark(#635c4f, #c4b9a5);
+  --accent:         #ffbc0d; /* 拱门金黄 */
+  --accent-hover:   #f0ad00;
+  --text-on-accent: #27251f; /* 金黄底必须配深棕黑字 (10.8:1) */
+  --accent-secondary: #db0007; /* 番茄红点缀 */
+  --radius-sm:      9999px;
+  --radius-md:      16px;
+  --radius-lg:      24px;
+  --ease-out:       var(--ease-spring);
+}
+
+/* 预设 D：Cartier / Hermès 高定奢华（珠宝腕表 / 高定时装 / 奢品美妆 / 艺术拍卖） */
+[data-style="haute-luxury"] {
+  --font-display:   var(--font-luxury);
+  --bg:             light-dark(#fcfaf5, #0c0b0a);
+  --surface:        light-dark(#ffffff, #141210);
+  --surface-sunken: light-dark(#f3efe6, #080706);
+  --border:         light-dark(rgba(184, 151, 88, 0.25), rgba(194, 160, 98, 0.28));
+  --border-strong:  light-dark(rgba(184, 151, 88, 0.45), rgba(194, 160, 98, 0.50));
+  --text:           light-dark(#141210, #f7f4ed);
+  --text-secondary: light-dark(#5c564d, #a8a296);
+  --accent:         light-dark(#7a1616, #c2a062); /* 亮色深酒红 / 暗色香槟金 */
+  --accent-hover:   light-dark(#5e1010, #d4b475);
+  --text-on-accent: light-dark(#ffffff, #0c0b0a);
+  --radius-xs:      0px;
+  --radius-sm:      0px;
+  --radius-md:      0px;
+  --radius-lg:      0px;
+  --radius-xl:      0px;
+  --shadow-sm:      none;
+  --shadow-md:      none;
+  --duration-base:  480ms;
+  --ease-out:       var(--ease-theater);
+}
+
+/* 预设 E：Nike 竞技张力（运动装备 / 街头潮牌 / 球鞋发售 / 健身竞技） */
+[data-style="kinetic-sport"] {
+  --font-display:   var(--font-condensed);
+  --bg:             light-dark(#ffffff, #111111);
+  --surface:        light-dark(#f5f5f5, #1c1c1e);
+  --surface-sunken: light-dark(#e5e5e5, #0a0a0b);
+  --text:           light-dark(#111111, #ffffff);
+  --text-secondary: light-dark(#52525b, #a1a1aa);
+  --accent:         light-dark(#fa5400, #ceff00); /* 亮色赛道橙 / 暗色伏特黄 */
+  --accent-hover:   light-dark(#e04800, #b8e600);
+  --text-on-accent: light-dark(#ffffff, #111111);
+  --radius-sm:      9999px; /* 胶囊按钮 */
+  --radius-md:      4px;    /* 硬朗卡片 */
+  --radius-lg:      6px;
+}
+
+/* 预设 F：MoMA / Art Basel 先锋策展（美术馆 / 建筑事务所 / 哲学特展 / 作品集） */
+[data-style="art-gallery"] {
+  --font-display:   var(--font-serif);
+  --bg:             light-dark(#f4f2ed, #121211);
+  --surface:        light-dark(#f4f2ed, #121211);
+  --surface-sunken: light-dark(#eae6df, #1a1918);
+  --border:         light-dark(#141413, #ececea); /* 外露实线网格 */
+  --border-strong:  light-dark(#141413, #ececea);
+  --text:           light-dark(#111111, #f4f2ed);
+  --text-secondary: light-dark(#4a4946, #b5b3ad);
+  --accent:         #d9381e; /* 展签朱红 */
+  --text-on-accent: #ffffff;
+  --radius-xs:      0px;
+  --radius-sm:      0px;
+  --radius-md:      0px;
+  --radius-lg:      0px;
+  --shadow-sm:      none;
+  --shadow-md:      none;
+}
+
+/* 预设 G：Aesop / Airbnb 大地温润（生活服务 / 酒店民宿 / 护肤芳疗 / 医疗康养） */
+[data-style="earthy-service"] {
+  --font-display:   var(--font-serif);
+  --bg:             light-dark(#f6f2ea, #1b1916);
+  --surface:        light-dark(#fdfbf7, #24211d);
+  --surface-sunken: light-dark(#ebe5d8, #141210);
+  --border:         light-dark(#d8d0c1, rgba(255, 248, 235, 0.12));
+  --border-strong:  light-dark(#b8ae9c, rgba(255, 248, 235, 0.22));
+  --text:           light-dark(#25231f, #ede8df);
+  --text-secondary: light-dark(#635e54, #a8a093);
+  --accent:         light-dark(#3f5241, #7a9e7e); /* 鼠尾草橄榄绿 */
+  --accent-hover:   light-dark(#314133, #8eb292);
+  --text-on-accent: light-dark(#ffffff, #141a15);
+  --radius-sm:      6px;
+  --radius-md:      10px;
+  --radius-lg:      12px;
+}
+
+/* 预设 H：Duolingo / Brilliant 互动教育（语言学习 / STEM 闯关 / 少儿启蒙） */
+[data-style="playful-edu"] {
+  --font-display:   var(--font-rounded);
+  --font-body:      var(--font-rounded);
+  --bg:             light-dark(#ffffff, #131f24);
+  --surface:        light-dark(#f7f8fa, #1b2b32);
+  --surface-sunken: light-dark(#e5e7eb, #0f181c);
+  --border:         light-dark(#e5e7eb, #2e424b);
+  --border-strong:  light-dark(#cecece, #3b535e);
+  --text:           light-dark(#1f2937, #f3f4f6);
+  --text-secondary: light-dark(#6b7280, #9ca3af);
+  --accent:         #46a302; /* 活力闯关绿 */
+  --accent-hover:   #3c8c00;
+  --text-on-accent: #ffffff;
+  --radius-sm:      12px;
+  --radius-md:      14px;
+  --radius-lg:      20px;
+  --btn-depth:      4px;     /* 开启 3D 物理按键底边厚度 */
+  --ease-out:       var(--ease-spring);
+}
+
+/* ---------- 10. 手动切换亮/暗与高对比度支持 ---------- */
 :root:has(> head > meta[name="color-scheme"][content="dark"]),
 :root[data-theme="dark"]  { color-scheme: dark; }
 :root:has(> head > meta[name="color-scheme"][content="light"]),
 :root[data-theme="light"] { color-scheme: light; }
 
-/* 局部强制某一配色（如永远是暗色的代码块 / 视频播放器） */
 .scheme-dark  { color-scheme: dark; }
 .scheme-light { color-scheme: light; }
 
-/* ---------- 10. 用户偏好 ---------- */
 @media (prefers-contrast: more) {
   :root {
     --border:         var(--border-input);
     --border-strong:  var(--border-input);
     --text-secondary: var(--text);
-    --text-tertiary:  light-dark(var(--gray-700), oklch(80% 0.006 var(--hue-neutral)));
   }
 }
 
-/* Windows 高对比度（强制颜色）：阴影与背景图会被移除，靠系统色维持边界与焦点 */
 @media (forced-colors: active) {
   :root { --focus-ring: Highlight; }
 }
 
-/* ---------- 11. 旧浏览器回退（可删除） ----------
-   light-dark() 支持：Chrome/Edge 123+、Firefox 120+、Safari 17.5+。
-   若目标浏览器都满足，可整段删除；否则保留，修改上方颜色时同步修改这里。
-   回退模式下只跟随系统偏好，手动切换不生效。 */
-@supports not (color: light-dark(#fff, #000)) {
-  :root {
-    --bg: oklch(98% 0.008 90); --surface: var(--gray-0); --surface-sunken: var(--gray-100); --surface-raised: var(--gray-0);
-    --border: oklch(20% 0.01 var(--hue-neutral) / 0.10); --border-strong: oklch(20% 0.01 var(--hue-neutral) / 0.18);
-    --border-input: oklch(62% 0.008 var(--hue-neutral));
-    --text: var(--gray-950); --text-secondary: var(--gray-600); --text-tertiary: var(--gray-500);
-    --accent: var(--brand-600); --accent-hover: var(--brand-700); --accent-subtle: var(--brand-50);
-    --text-on-accent: oklch(99% 0.005 var(--hue-brand)); --focus-ring: var(--brand-500);
-    --success: oklch(52% 0.12 150); --warning: oklch(55% 0.12 70); --danger: oklch(53% 0.18 27); --info: oklch(52% 0.12 245);
-    --text-on-danger: oklch(99% 0 0);
-    --chart-1: oklch(58% 0.13 var(--hue-brand)); --chart-2: oklch(58% 0.11 250); --chart-3: oklch(58% 0.11 160);
-    --chart-4: oklch(62% 0.12 85); --chart-5: oklch(56% 0.11 320); --chart-6: oklch(58% 0.09 205); --chart-muted: var(--gray-300);
-    --shadow-base: oklch(30% 0.02 var(--hue-neutral));
-  }
-  @media (prefers-color-scheme: dark) {
-    :root {
-      --bg: oklch(19% 0.004 var(--hue-neutral)); --surface: oklch(23% 0.005 var(--hue-neutral));
-      --surface-sunken: oklch(16% 0.004 var(--hue-neutral)); --surface-raised: oklch(27% 0.006 var(--hue-neutral));
-      --border: oklch(100% 0 0 / 0.09); --border-strong: oklch(100% 0 0 / 0.16); --border-input: oklch(54% 0.008 var(--hue-neutral));
-      --text: oklch(93% 0.006 var(--hue-neutral)); --text-secondary: oklch(72% 0.006 var(--hue-neutral)); --text-tertiary: oklch(58% 0.006 var(--hue-neutral));
-      --accent: oklch(68% 0.12 var(--hue-brand)); --accent-hover: oklch(74% 0.11 var(--hue-brand)); --accent-subtle: oklch(68% 0.12 var(--hue-brand) / 0.14);
-      --text-on-accent: oklch(18% 0.01 var(--hue-brand)); --focus-ring: var(--brand-400);
-      --success: oklch(74% 0.13 150); --warning: oklch(80% 0.13 80); --danger: oklch(70% 0.16 25); --info: oklch(74% 0.11 245);
-      --text-on-danger: oklch(18% 0.02 27);
-      --chart-1: oklch(72% 0.12 var(--hue-brand)); --chart-2: oklch(72% 0.10 250); --chart-3: oklch(72% 0.11 160);
-      --chart-4: oklch(78% 0.12 85); --chart-5: oklch(72% 0.10 320); --chart-6: oklch(74% 0.09 205); --chart-muted: oklch(38% 0.006 var(--hue-neutral));
-      --shadow-base: oklch(0% 0 0);
-    }
-  }
-}
-
-/* ---------- 基础重置与全局排版 ---------- */
+/* ---------- 11. 基础重置与全局排版 ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 
-/* 表单与交互控件默认不继承 body 字体（会退化为 Arial / 系统控件字体），必须显式继承 */
 button, input, select, textarea, optgroup {
   font: inherit;
   color: inherit;
@@ -270,7 +391,7 @@ h1, h2, h3, h4 {
   text-wrap: balance;
   margin: 0;
 }
-:lang(zh) :is(h1, h2, h3, h4) { letter-spacing: 0; } /* 中文不收字距 */
+:lang(zh) :is(h1, h2, h3, h4) { letter-spacing: 0; }
 
 p { text-wrap: pretty; max-width: var(--measure); }
 
@@ -286,7 +407,6 @@ img, video { height: auto; }
 
 .tabular { font-variant-numeric: tabular-nums; }
 
-/* 视觉隐藏但读屏可读（图标按钮补充文字、跳转链接等） */
 .sr-only {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;
@@ -300,48 +420,3 @@ img, video { height: auto; }
     scroll-behavior: auto !important;
   }
 }
-
-/* ==========================================================================
-   框架映射
-
-   ▸ Tailwind v4（放进 app.css）：
-   @import "tailwindcss";
-   @import "./tokens.css";
-   @theme inline {
-     --color-bg: var(--bg);
-     --color-surface: var(--surface);
-     --color-sunken: var(--surface-sunken);
-     --color-border: var(--border);
-     --color-fg: var(--text);
-     --color-muted: var(--text-secondary);
-     --color-subtle: var(--text-tertiary);
-     --color-accent: var(--accent);
-     --color-accent-fg: var(--text-on-accent);
-     --color-danger: var(--danger);
-     --font-sans: var(--font-body);
-     --font-serif: var(--font-display);
-     --radius-sm: var(--radius-sm);
-     --radius-md: var(--radius-md);
-     --radius-lg: var(--radius-lg);
-     --shadow-md: var(--shadow-md);
-   }
-   @custom-variant dark (&:where([data-theme=dark], [data-theme=dark] *)); ← 仅当需要 dark: 前缀时
-   之后即可使用 bg-bg / text-fg / text-muted / bg-accent / border-border 等类名。
-   颜色已由 light-dark() 自动切换，通常无需再写 dark: 前缀。
-
-   ▸ shadcn/ui（覆盖其 CSS 变量即可，无需改组件源码）：
-   :root {
-     --background: var(--bg);            --foreground: var(--text);
-     --card: var(--surface);             --card-foreground: var(--text);
-     --popover: var(--surface-raised);   --popover-foreground: var(--text);
-     --primary: var(--accent);           --primary-foreground: var(--text-on-accent);
-     --secondary: var(--surface-sunken); --secondary-foreground: var(--text);
-     --muted: var(--surface-sunken);     --muted-foreground: var(--text-secondary);
-     --accent: var(--surface-sunken);    --accent-foreground: var(--text);  ← 注意：shadcn 的 accent 是 hover 底色
-     --destructive: var(--danger);
-     --border: var(--border-strong);     --input: var(--border-input);  --ring: var(--focus-ring);
-     --radius: var(--radius-sm);
-   }
-   ⚠ 命名冲突：shadcn 也用 --accent / --border。整合时先把本文件的同名语义变量
-     重命名（如 --cu-accent），或只引入 §1 原语后再按上表映射。
-   ========================================================================== */

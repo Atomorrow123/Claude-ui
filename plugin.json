@@ -2,15 +2,16 @@
   // Antigravity plugin manifest
   "name": "claude-ui",
   "displayName": "Claude UI",
-  "description": "有明确审美立场的前端 UI 构建指南：设计方向决策、排版、色彩、间距、组件状态、动效、暗色模式、中文排版与反 AI 味自检清单。",
-  "version": "1.1.0",
+  "description": "以 Claude 秩序美学为底座、支持全行业自适应变形与知名品牌先例借镜（Apple、Nike、McDonald's、Cartier、Aesop、Linear 等）的前端 UI 构建指南。",
+  "version": "1.2.0",
   "author": { "name": "齐天大圣123 & Claude Code", "url": "https://github.com/Atomorrow123" },
   "homepage": "https://github.com/Atomorrow123/Claude-ui",
   "repository": { "type": "git", "url": "https://github.com/Atomorrow123/Claude-ui" },
   "logo": "assets/logo.svg",
   "suggestedPrompts": [
     "用 Claude UI 给我做一个 AI 写作工具的落地页",
-    "按 Claude UI 的自检清单审查并优化当前页面的 UI",
-    "为这个项目生成一套亮/暗模式的设计 token"
+    "参考麦当劳和 Shake Shack 的风格，做一个精品汉堡点单页",
+    "参考 Cartier 和高定画册风格，做一个腕表典藏展陈页",
+    "按 Claude UI 自检清单审查并优化当前页面的 UI"
   ]
 }

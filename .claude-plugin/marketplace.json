@@ -5,8 +5,8 @@
     {
       "name": "claude-ui",
       "source": "./",
-      "description": "An opinionated frontend UI building guide with design tokens, aesthetic directions, component recipes and an anti-AI-slop checklist.",
-      "version": "1.1.0",
+      "description": "An adaptive frontend UI building guide anchored on Claude's editorial discipline, featuring 12 iconic brand precedents, a 12-industry adaptive matrix, and interactive style samples.",
+      "version": "1.2.0",
       "author": { "name": "齐天大圣123 & Claude Code" },
       "homepage": "https://github.com/Atomorrow123/Claude-ui"
     }

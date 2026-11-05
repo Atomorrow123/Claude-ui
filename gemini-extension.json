@@ -1,5 +1,5 @@
 {
   "name": "claude-ui",
-  "version": "1.1.0",
-  "description": "Opinionated frontend UI building guide (Agent Skill): design tokens, aesthetic directions, component recipes, anti-AI-slop checklist."
+  "version": "1.2.0",
+  "description": "Adaptive frontend UI building guide (Agent Skill): Claude editorial core, 12 iconic brand precedents, 12-industry adaptive matrix, design tokens, and interactive style samples."
 }

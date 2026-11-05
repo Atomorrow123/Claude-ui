@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light dark">
+  <title>Claude UI · 全景行业自适应与品牌先例交互样本库</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600&family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,500;6..72,600&family=Noto+Sans+SC:wght@400;500;600;700;900&family=Noto+Serif+SC:wght@400;500;600;700&family=Oswald:wght@700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../references/tokens.css">
+  <style>
+    /* 顶部常驻风格控制台 */
+    .control-bar {
+      position: sticky;
+      top: 0;
+      z-index: var(--z-sticky);
+      background: color-mix(in oklab, var(--bg) 88%, transparent);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-strong);
+      padding: var(--space-3) var(--gutter);
+    }
+    .control-bar__inner {
+      max-width: var(--container);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--font-sans);
+      font-size: var(--text-sm);
+      font-weight: 600;
+    }
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+    .preset-switcher {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .preset-btn {
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text-secondary);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 140ms var(--ease-out);
+    }
+    .preset-btn:hover {
+      color: var(--text);
+      border-color: var(--text-secondary);
+    }
+    .preset-btn[aria-selected="true"] {
+      background: var(--accent);
+      color: var(--text-on-accent);
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* 主舞台 */
+    .stage-container {
+      max-width: var(--container);
+      margin: 0 auto;
+      padding: var(--space-10) var(--gutter) var(--space-24);
+    }
+
+    /* 顶部 3 行设计简报横幅 */
+    .brief-banner {
+      background: var(--surface-sunken);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: var(--space-5) var(--space-6);
+      margin-bottom: var(--space-8);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--space-4);
+      font-family: var(--font-sans);
+    }
+    .brief-item__label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .brief-item__val {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* 通用面板切换 */
+    .domain-panel {
+      display: none;
+    }
+    .domain-panel.is-active {
+      display: block;
+      animation: panelFade 220ms var(--ease-out);
+    }
+    @keyframes panelFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 通用按钮与控件 */
+    .ui-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 0 22px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      border-bottom-width: calc(1px + var(--btn-depth, 0px));
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: transform 120ms var(--ease-out), background-color 140ms var(--ease-out);
+    }
+    .ui-btn:active {
+      transform: translateY(calc(var(--btn-depth, 0px) * 0.5)) scale(0.99);
+    }
+    .ui-btn--primary {
+      background: var(--accent);
+      color: var(--text-on-accent);
+      border-color: color-mix(in oklab, var(--accent), #000 18%);
+    }
+    .ui-btn--primary:hover {
+      background: var(--accent-hover);
+    }
+    .ui-btn--secondary {
+      background: var(--surface);
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+    .ui-btn--secondary:hover {
+      background: var(--surface-sunken);
+    }
+
+    /* 响应式双栏 */
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: var(--space-8);
+      align-items: start;
+    }
+    @media (max-width: 860px) {
+      .split-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body data-style="editorial">
+
+  <!-- 顶部风格切换控制台 -->
+  <header class="control-bar">
+    <div class="control-bar__inner">
+      <div class="brand-title">
+        <span class="brand-dot" aria-hidden="true"></span>
+        <span>Claude UI · 行业自适应样本画廊</span>
+      </div>
+
+      <div class="preset-switcher" role="tablist" aria-label="选择行业与品牌风格预设">
+        <button type="button" role="tab" class="preset-btn" aria-selected="true" data-preset="editorial">01 哲学与出版 (Claude)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="joyful-food">02 食品与餐饮 (McDonald's)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="apple-tech">03 科技与硬件 (Apple/Linear)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="haute-luxury">04 服装与奢品 (Cartier)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="kinetic-sport">05 运动与潮流 (Nike)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="art-gallery">06 艺术与策展 (MoMA)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="earthy-service">07 服务与酒旅 (Aesop/Airbnb)</button>
+        <button type="button" role="tab" class="preset-btn" aria-selected="false" data-preset="playful-edu">08 互动教育 (Duolingo)</button>
+      </div>
+
+      <button type="button" id="theme-btn" class="preset-btn" aria-label="切换亮暗模式">
+        ◐ 切换亮/暗色
+      </button>
+    </div>
+  </header>
+
+  <main class="stage-container">
+    <!-- 实时展示当前预设的 3 行设计锚点 -->
+    <section class="brief-banner" aria-label="当前风格设计简报">
+      <div>
+        <span class="brief-item__label">01 · 目标领域与对标先例</span>
+        <div class="brief-item__val" id="brief-domain">哲学人文与深度写作 · 对标 Anthropic Claude × The New Yorker</div>
+      </div>
+      <div>
+        <span class="brief-item__label">02 · 底层基底与表层变奏</span>
+        <div class="brief-item__val" id="brief-tokens">暖米白纸面 (#faf9f5) + 赤陶色 (#b4553a) + 衬线大标题 × 65ch 严整行宽</div>
+      </div>
+      <div>
+        <span class="brief-item__label">03 · 行业签名细节 (Signature Move)</span>
+        <div class="brief-item__val" id="brief-signature">双栏手稿批注对照 + 本地 PDF 页码溯源 + 1px 暖灰分割线</div>
+      </div>
+    </section>
+
+    <!-- ==================== 01. 哲学与人文出版 (Claude Editorial) ==================== -->
+    <section class="domain-panel is-active" data-panel="editorial">
+      <div class="split-grid">
+        <div>
+          <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: 0.06em;">
+            PHILOSOPHY &amp; ARCHIVE · 思想文库卷四
+          </span>
+          <h1 style="font-size: var(--text-4xl); margin: 12px 0 20px;">
+            把零散摘录与读书卡片，打磨成经得起推敲的哲学长文。
+          </h1>
+          <p style="color: var(--text-secondary); font-size: 18px; margin-bottom: 28px;">
+            不替你生成空洞的学术套话。当你在论述“技术与异化”时，侧栏自动调出三年前你在《拱廊街计划》与海德格尔选集里划下的原始批注。
+          </p>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button type="button" class="ui-btn ui-btn--primary">新建手稿卷宗 →</button>
+            <button type="button" class="ui-btn ui-btn--secondary">导入 Zotero 文献库</button>
+          </div>
+        </div>
+
+        <div style="background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-md);">
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 12px; color: var(--text-tertiary); margin-bottom: 12px;">
+            <span>手稿 · 现代性批判札记</span>
+            <span class="tabular">P. 048 · 已溯源</span>
+          </div>
+          <blockquote style="font-family: var(--font-serif); font-size: 17px; line-height: 1.85; margin: 0 0 20px; padding-left: 16px; border-left: 2px solid var(--accent);">
+            “拱廊街是十九世纪工业奢华的发明，是玻璃屋顶与大理石镶板的通道；在这里，漫游者将整座城市视为室内的剧场。”
+          </blockquote>
+          <div style="background: var(--surface-sunken); padding: 14px 16px; border-radius: var(--radius-sm); font-size: 13px; color: var(--text-secondary);">
+            <strong style="color: var(--text); display: block; margin-bottom: 4px;">✓ 文献页码核验通过</strong>
+            匹配本地馆藏 <code>Benjamin_Passagenwerk_1935.pdf</code> 第 48 页第 2 段。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 02. 食品与餐饮 (McDonald's / Shake Shack) ==================== -->
+    <section class="domain-panel" data-panel="joyful-food">
+      <div class="split-grid">
+        <div>
+          <span style="display: inline-block; background: #db0007; color: #fff; padding: 4px 14px; border-radius: 999px; font-size: 13px; font-weight: 700;">
+            🔥 现烤出炉 · 3 分钟极速取餐
+          </span>
+          <h1 style="font-size: var(--text-4xl); font-weight: 700; margin: 14px 0 16px;">
+            双层厚切安格斯，每一口都汁水丰盈。
+          </h1>
+          <p style="color: var(--text-secondary); font-size: 18px; margin-bottom: 24px;">
+            100% 澳洲谷饲安格斯牛肉饼，高温铁板瞬间锁汁，叠满双倍熟成切达芝士与现烘黄油布里欧修面包。
+          </p>
+
+          <!-- 交互式规格胶囊选择 -->
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 28px;" id="food-combo-group">
+            <button type="button" class="ui-btn ui-btn--secondary food-opt" data-price="36" style="border-width: 2px;">
+              单品汉堡 · ¥36
+            </button>
+            <button type="button" class="ui-btn ui-btn--primary food-opt" data-price="49">
+              ★ 脆薯冰可乐三件套 · ¥49
+            </button>
+            <button type="button" class="ui-btn ui-btn--secondary food-opt" data-price="88" style="border-width: 2px;">
+              双人欢享桶 · ¥88
+            </button>
+          </div>
+
+          <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap;">
+            <button type="button" id="add-tray-btn" class="ui-btn ui-btn--primary" style="font-size: 17px; padding: 0 32px; box-shadow: 0 6px 20px rgba(255,188,13,0.4);">
+              <span>+ 加入今日餐盘</span>
+              <span class="tabular" id="food-price-label">¥49.00</span>
+            </button>
+            <span style="font-weight: 700; font-size: 15px;" class="tabular" id="tray-status">餐盘内已有 1 份餐品</span>
+          </div>
+        </div>
+
+        <div style="background: var(--surface); border: 2px solid var(--border); border-radius: var(--radius-lg); padding: 28px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <strong style="font-size: 18px;">定制你的专属风味</strong>
+            <span class="tabular" style="background: var(--surface-sunken); padding: 4px 12px; border-radius: 999px; font-size: 13px; font-weight: 600;">680 kcal</span>
+          </div>
+          <div style="display: grid; gap: 12px;">
+            <label style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface-sunken); border-radius: 14px; cursor: pointer; font-weight: 600;">
+              <span><input type="checkbox" checked> 加一片熟成切达芝士</span>
+              <span class="tabular">+ ¥4.00</span>
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface-sunken); border-radius: 14px; cursor: pointer; font-weight: 600;">
+              <span><input type="checkbox" checked> 双倍秘制烟熏汉堡酱</span>
+              <span style="color: #264f36;">免费特调</span>
+            </label>
+            <label style="display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; background: var(--surface-sunken); border-radius: 14px; cursor: pointer; font-weight: 600;">
+              <span><input type="checkbox"> 薯条换购现炸松露薯格</span>
+              <span class="tabular">+ ¥6.00</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 03. 科技与智能硬件 (Apple / Linear) ==================== -->
+    <section class="domain-panel" data-panel="apple-tech">
+      <div style="text-align: center; max-width: 760px; margin: 0 auto 40px;">
+        <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent); font-weight: 600; letter-spacing: 0.08em;">
+          OPTICAL SILICON · 端侧神经算力工作站
+        </span>
+        <h1 style="font-size: var(--text-4xl); font-weight: 700; letter-spacing: -0.03em; margin: 12px 0 16px;">
+          静默如水，澎湃如雷。
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 18px; margin: 0 auto 24px;">
+          航空级一体成型铝金属机身，内置 128 核统一内存神经引擎，本地实时运行千亿参数模型。
+        </p>
+        <div style="display: inline-flex; gap: 12px;">
+          <button type="button" class="ui-btn ui-btn--primary">选配你的机型</button>
+          <button type="button" class="ui-btn ui-btn--secondary">查看架构白皮书 <kbd style="font-family: var(--font-mono); font-size: 12px; margin-left: 4px;">⌘K</kbd></button>
+        </div>
+      </div>
+
+      <!-- Apple Bento 3 卡交错网格 -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px;">
+        <div style="background: var(--surface); padding: 32px; border-radius: var(--radius-lg);">
+          <span style="font-size: 13px; color: var(--text-secondary); font-weight: 600;">内存带宽</span>
+          <div class="tabular" style="font-size: 48px; font-weight: 700; letter-spacing: -0.03em; margin: 8px 0;">800 GB/s</div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">零拷贝共享显存池，瞬时加载完整多模态索引。</p>
+        </div>
+        <div style="background: var(--surface); padding: 32px; border-radius: var(--radius-lg);">
+          <span style="font-size: 13px; color: var(--text-secondary); font-weight: 600;">声学表现</span>
+          <div class="tabular" style="font-size: 48px; font-weight: 700; letter-spacing: -0.03em; margin: 8px 0;">&lt; 12 dB</div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">满载编译下依然低于耳语分贝，书房级静谧体验。</p>
+        </div>
+        <div style="background: var(--surface); padding: 32px; border-radius: var(--radius-lg);">
+          <span style="font-size: 13px; color: var(--text-secondary); font-weight: 600;">能效比提升</span>
+          <div class="tabular" style="font-size: 48px; font-weight: 700; color: var(--accent); letter-spacing: -0.03em; margin: 8px 0;">3.4×</div>
+          <p style="font-size: 14px; color: var(--text-secondary); margin: 0;">相比传统独立显卡工作站，大幅降低每 Token 能耗。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 04. 服装与高定奢品 (Cartier / Hermès) ==================== -->
+    <section class="domain-panel" data-panel="haute-luxury">
+      <div style="border: 1px solid var(--border-strong); padding: 56px 32px; text-align: center; background: var(--surface);">
+        <span style="display: block; font-family: var(--font-sans); font-size: 11px; letter-spacing: var(--tracking-luxury); text-transform: uppercase; color: var(--accent); margin-bottom: 20px;">
+          MAISON DE HAUTE HORLOGERIE · 巴黎芳登广场沙龙
+        </span>
+        <h1 style="font-size: var(--text-5xl); font-weight: 500; line-height: 1.08; max-width: 18ch; margin: 0 auto 24px;">
+          时间在几何切面间悄然停驻
+        </h1>
+        <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.9; max-width: 50ch; margin: 0 auto 40px;">
+          手工雕琢 18K 玫瑰金八角表圈，搭配罗马数字时标与剑形蓝钢指针。每一枚时计均由独立制表大师耗时逾四百小时手工组装与调校。
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); max-width: 600px; margin: 0 auto 40px; border-top: 1px solid var(--border-strong); border-bottom: 1px solid var(--border-strong); padding: 20px 0;">
+          <div>
+            <span style="display: block; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; color: var(--text-secondary);">机芯编号</span>
+            <span style="font-size: 20px;">Calibre 9601 MC</span>
+          </div>
+          <div style="border-left: 1px solid var(--border-strong); border-right: 1px solid var(--border-strong);">
+            <span style="display: block; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; color: var(--text-secondary);">表壳材质</span>
+            <span style="font-size: 20px;">18K 玫瑰金 / 蓝宝石</span>
+          </div>
+          <div>
+            <span style="display: block; font-family: var(--font-sans); font-size: 11px; letter-spacing: 0.15em; color: var(--text-secondary);">典藏配额</span>
+            <span style="font-size: 20px;" class="tabular">全球 50 枚</span>
+          </div>
+        </div>
+
+        <div style="display: inline-flex; gap: 16px; flex-wrap: wrap; justify-content: center;">
+          <button type="button" class="ui-btn ui-btn--primary" style="letter-spacing: 0.14em; font-family: var(--font-sans); font-size: 13px; padding: 0 36px;">
+            预约私人沙龙鉴赏
+          </button>
+          <button type="button" class="ui-btn ui-btn--secondary" style="letter-spacing: 0.14em; font-family: var(--font-sans); font-size: 13px; padding: 0 36px;">
+            探索高级制表工艺
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 05. 运动与潮流街头 (Nike SNKRS) ==================== -->
+    <section class="domain-panel" data-panel="kinetic-sport">
+      <div class="split-grid">
+        <div>
+          <span style="display: inline-block; background: var(--accent); color: var(--text-on-accent); font-weight: 800; font-size: 12px; padding: 4px 10px; letter-spacing: 0.06em;">
+            SNKRS EXCLUSIVE · 赛道竞速实验室
+          </span>
+          <h1 style="font-size: var(--text-5xl); font-weight: 900; line-height: 0.96; text-transform: uppercase; margin: 16px 0 20px;">
+            AEROFLY PROTO<br>破风而行。
+          </h1>
+          <p style="color: var(--text-secondary); font-size: 16px; margin-bottom: 24px;">
+            双腔室超临界氮气注入中底 + 全掌铲型高刚性碳板。专为全马破三跑者调校，能量回馈率高达 89.4%。
+          </p>
+          <div class="tabular" style="font-size: 32px; font-weight: 900;">¥ 2,099</div>
+        </div>
+
+        <div style="background: var(--surface); padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--border-strong);">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px; font-weight: 700;">
+            <span>选择尺码 (EU)</span>
+            <span style="color: var(--accent);">● 现货发售中</span>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 24px;" class="tabular" id="shoe-size-grid">
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">40</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">41</button>
+            <button type="button" class="ui-btn ui-btn--primary shoe-size">42</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">42.5</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">43</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">44</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">44.5</button>
+            <button type="button" class="ui-btn ui-btn--secondary shoe-size">45</button>
+          </div>
+          <button type="button" class="ui-btn ui-btn--primary" style="width: 100%; font-weight: 800; font-size: 16px;">
+            立即锁定尺码 · 顺丰次日达
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 06. 艺术策展与建筑空间 (MoMA / Art Basel) ==================== -->
+    <section class="domain-panel" data-panel="art-gallery">
+      <div style="border: 1px solid var(--border-strong);">
+        <div style="display: flex; justify-content: space-between; padding: 12px 24px; border-bottom: 1px solid var(--border-strong); font-family: var(--font-mono); font-size: 12px;">
+          <span>CURATORIAL ARCHIVE · 当代空间与光影文献展</span>
+          <span style="color: var(--accent);">GALLERY 03 · 2026.11 — 2027.03</span>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+          <div style="padding: 40px 28px; border-right: 1px solid var(--border-strong);">
+            <span style="font-family: var(--font-mono); font-size: 12px; color: var(--accent);">FIG. 01 — 空间装置</span>
+            <h1 style="font-size: var(--text-4xl); margin: 12px 0 20px;">
+              粗野主义混凝土与光的七次折射
+            </h1>
+            <p style="color: var(--text-secondary); font-size: 16px; line-height: 1.8;">
+              展览以瑞士建筑师彼得·卒姆托的声学与光影手稿为线索，将美术馆三号厅还原为一座可步入的几何共鸣腔。
+            </p>
+          </div>
+          <div style="padding: 40px 28px; display: flex; flex-direction: column; justify-content: space-between;">
+            <div style="font-family: var(--font-mono); font-size: 13px; display: grid; gap: 12px;">
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                <span>策展总监</span><span>陈墨 / Dr. Elena Rostova</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                <span>展品数量</span><span class="tabular">38 件建筑模型与手稿原件</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+                <span>语音导览</span><span>支持无障碍读屏与双语声景</span>
+              </div>
+            </div>
+            <div style="margin-top: 28px;">
+              <button type="button" class="ui-btn ui-btn--primary" style="width: 100%; justify-content: space-between;">
+                <span>预约观展电子票 (免费)</span>
+                <span>→</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 07. 服务与酒旅康养 (Aesop / Airbnb) ==================== -->
+    <section class="domain-panel" data-panel="earthy-service">
+      <div class="split-grid">
+        <div>
+          <span style="font-size: 12px; letter-spacing: 0.08em; color: var(--accent); font-weight: 600;">
+            BOTANICAL SANCTUARY · 栖霞山居私汤与芳疗
+          </span>
+          <h1 style="font-size: var(--text-4xl); font-weight: 500; margin: 12px 0 20px;">
+            大西洋雪松与苦橙叶深层舒缓疗程
+          </h1>
+          <div style="border-top: 2px solid var(--text); font-size: 15px;">
+            <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-strong);">
+              <strong>核心功效</strong>
+              <span style="color: var(--text-secondary);">缓解差旅肩颈紧绷、重建深睡节律</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-strong);">
+              <strong>草本配方</strong>
+              <span style="color: var(--text-secondary);">雪松木、苦橙叶、冷压甜杏仁基底油</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-strong);">
+              <strong>空间配置</strong>
+              <span style="color: var(--text-secondary);">独立竹林茶室 + 碳酸山泉私汤</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow-md);">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 20px;">
+            <div>
+              <span class="tabular" style="font-size: 28px; font-weight: 600;">¥ 680</span>
+              <span style="font-size: 14px; color: var(--text-secondary);"> / 90 分钟（含全部税费）</span>
+            </div>
+            <span style="font-size: 13px; font-weight: 600; color: var(--accent);">★ 4.96 (128 条住客评价)</span>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--border-strong); border-radius: var(--radius-sm); margin-bottom: 20px; font-size: 14px;">
+            <div style="padding: 12px; border-right: 1px solid var(--border-strong);">
+              <div style="font-size: 11px; color: var(--text-secondary);">预约日期</div>
+              <div style="font-weight: 600;">2026年11月8日</div>
+            </div>
+            <div style="padding: 12px;">
+              <div style="font-size: 11px; color: var(--text-secondary);">到店时段</div>
+              <div class="tabular" style="font-weight: 600;">15:30 — 17:00</div>
+            </div>
+          </div>
+          <button type="button" class="ui-btn ui-btn--primary" style="width: 100%;">
+            锁定独立理疗茶室
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== 08. 互动教育与知识闯关 (Duolingo / Brilliant) ==================== -->
+    <section class="domain-panel" data-panel="playful-edu">
+      <div style="max-width: 720px; margin: 0 auto; background: var(--surface); border: 2px solid var(--border-strong); border-radius: var(--radius-lg); padding: 32px;">
+        <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+          <div style="flex: 1; height: 14px; background: var(--surface-sunken); border-radius: 999px; overflow: hidden;">
+            <div id="edu-progress" style="width: 65%; height: 100%; background: var(--accent); border-radius: 999px; transition: width 240ms var(--ease-out);"></div>
+          </div>
+          <span class="tabular" style="font-weight: 700; color: #ff9600;">🔥 14 天连胜</span>
+        </div>
+
+        <span style="font-size: 12px; font-weight: 700; color: #1cb0f6; text-transform: uppercase; letter-spacing: 0.06em;">
+          算法思维闯关 · 第 3 题
+        </span>
+        <h2 style="font-size: 24px; margin: 8px 0 24px;">
+          在包含 1,024 个有序元素的数组中用二分查找定位目标，最多需要比较几次？
+        </h2>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px;" id="edu-options">
+          <button type="button" class="ui-btn ui-btn--secondary edu-opt" data-correct="false">A. 512 次</button>
+          <button type="button" class="ui-btn ui-btn--secondary edu-opt" data-correct="true">B. 10 次</button>
+          <button type="button" class="ui-btn ui-btn--secondary edu-opt" data-correct="false">C. 32 次</button>
+        </div>
+
+        <div id="edu-feedback" style="padding: 16px 20px; border-radius: var(--radius-md); background: var(--surface-sunken); font-size: 14px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="edu-feedback-text">点击上方任意带物理回弹厚度的选项卡片验证答案。</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const presetMeta = {
+      'editorial': {
+        domain: '哲学人文与深度写作 · 对标 Anthropic Claude × The New Yorker',
+        tokens: '暖米白纸面 (#faf9f5) + 赤陶色 (#b4553a) + 衬线大标题 × 65ch 严整行宽',
+        signature: '双栏手稿批注对照 + 本地 PDF 页码溯源 + 1px 暖灰分割线'
+      },
+      'joyful-food': {
+        domain: '连锁餐饮与新消费快消 · 对标 McDonald\'s (Turner Duckworth) × Shake Shack',
+        tokens: '暖奶油画布 (#fffdf7) + 拱门金 (#ffbc0d 配深棕字) 与番茄红 + 24px 饱满大圆角',
+        signature: '零认知负担规格胶囊快选 + 弹性加购反馈 + 清晰卡路里标签'
+      },
+      'apple-tech': {
+        domain: '消费电子与智能硬件 · 对标 Apple Bento × Linear 工程精密',
+        tokens: '光学浅灰容器 (#f5f5f7) / 纯黑暗色 + 光学蓝 (#0071e3) + 紧凑负字距大标题',
+        signature: '巨幅等宽参数 Bento 网格 + ⌘K 快捷键徽标 + 阻尼过渡曲线'
+      },
+      'haute-luxury': {
+        domain: '高级珠宝腕表与时装屋 · 对标 Cartier × Hermès × Celine',
+        tokens: '香槟羊皮白 / 深邃丝绒黑 + 香槟金细线 + 0px 绝对直角 + 高对比古典衬线',
+        signature: '0.18em 宽字距大写眉标 + 中轴对称典藏参数表 + 私人沙龙鉴赏预约'
+      },
+      'kinetic-sport': {
+        domain: '运动装备与街头潮流发售 · 对标 Nike SNKRS',
+        tokens: '高对比黑白基底 + 赛道橙/伏特黄 (#ceff00) + 超粗浓缩无衬线海报字',
+        signature: '突破常规的 5xl 浓缩大标题 + 交互式尺码矩阵 (Size Matrix)'
+      },
+      'art-gallery': {
+        domain: '当代美术馆与建筑策展 · 对标 MoMA × Art Basel (巴塞尔艺术展)',
+        tokens: '石膏暖白画布 (#f4f2ed) + 1px 纯黑外露贯穿网格线 + 展签朱红 (#d9381e)',
+        signature: '外露瑞士网格线 (Exposed Hairline Grid) + 博物馆馆藏展签编号 (FIG. 01)'
+      },
+      'earthy-service': {
+        domain: '精品酒旅康养与生活服务 · 对标 Aesop × Airbnb',
+        tokens: '未漂白亚麻大地色 (#f6f2ea) + 鼠尾草橄榄绿 (#3f5241) + 温润衬线标题',
+        signature: 'Aesop 药典式横线属性表 + Airbnb 含税透明价格预约卡'
+      },
+      'playful-edu': {
+        domain: '互动教育与知识闯关 · 对标 Duolingo × Brilliant',
+        tokens: '明快净白画布 + 活力闯关绿 (#46a302) + 16px 圆角 + 4px 物理底边厚度',
+        signature: '3D 物理按压回弹题卡 + 连胜火焰进度条 + 即时解析反馈'
+      }
+    };
+
+    const tabs = document.querySelectorAll('.preset-btn[data-preset]');
+    const panels = document.querySelectorAll('.domain-panel');
+    const briefDomain = document.getElementById('brief-domain');
+    const briefTokens = document.getElementById('brief-tokens');
+    const briefSignature = document.getElementById('brief-signature');
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.preset;
+        document.body.setAttribute('data-style', key);
+        tabs.forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+        panels.forEach(p => p.classList.toggle('is-active', p.dataset.panel === key));
+        if (presetMeta[key]) {
+          briefDomain.textContent = presetMeta[key].domain;
+          briefTokens.textContent = presetMeta[key].tokens;
+          briefSignature.textContent = presetMeta[key].signature;
+        }
+      });
+    });
+
+    // 亮暗模式切换
+    const themeBtn = document.getElementById('theme-btn');
+    const metaScheme = document.querySelector('meta[name="color-scheme"]');
+    themeBtn.addEventListener('click', () => {
+      const current = document.documentElement.getAttribute('data-theme');
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      metaScheme.content = next;
+    });
+
+    // 餐饮样本交互
+    let trayCount = 1;
+    let currentPrice = 49;
+    document.querySelectorAll('.food-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.food-opt').forEach(b => {
+          b.className = 'ui-btn ui-btn--secondary food-opt';
+        });
+        btn.className = 'ui-btn ui-btn--primary food-opt';
+        currentPrice = Number(btn.dataset.price);
+        document.getElementById('food-price-label').textContent = `¥${currentPrice}.00`;
+      });
+    });
+    document.getElementById('add-tray-btn').addEventListener('click', () => {
+      trayCount++;
+      document.getElementById('tray-status').textContent = `餐盘内已有 ${trayCount} 份餐品（合计 ¥${trayCount * currentPrice}.00）`;
+    });
+
+    // 球鞋尺码选择交互
+    document.querySelectorAll('.shoe-size').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.shoe-size').forEach(b => b.className = 'ui-btn ui-btn--secondary shoe-size');
+        btn.className = 'ui-btn ui-btn--primary shoe-size';
+      });
+    });
+
+    // 教育闯关答题交互
+    document.querySelectorAll('.edu-opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const isCorrect = btn.dataset.correct === 'true';
+        const fbText = document.getElementById('edu-feedback-text');
+        const prog = document.getElementById('edu-progress');
+        document.querySelectorAll('.edu-opt').forEach(b => b.className = 'ui-btn ui-btn--secondary edu-opt');
+        btn.className = 'ui-btn ui-btn--primary edu-opt';
+        if (isCorrect) {
+          fbText.innerHTML = '<strong style="color: var(--accent);">✓ 回答正确！</strong> 因为 2¹⁰ = 1,024，每次折半只需 10 次比较。';
+          prog.style.width = '100%';
+        } else {
+          fbText.innerHTML = '<strong style="color: var(--danger);">✕ 再想一想：</strong> 每次比较都会把剩余搜索范围缩小一半（log₂ N）。';
+        }
+      });
+    });
+  </script>
+</body>
+</html>
