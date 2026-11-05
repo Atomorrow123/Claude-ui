@@ -6,7 +6,7 @@
       "name": "claude-ui",
       "source": "./",
       "description": "An opinionated frontend UI building guide with design tokens, aesthetic directions, component recipes and an anti-AI-slop checklist.",
-      "version": "1.0.1",
+      "version": "1.0.2",
       "author": { "name": "齐天大圣123 & Claude Code" },
       "homepage": "https://github.com/Atomorrow123/Claude-ui"
     }

@@ -3,7 +3,7 @@
   "name": "claude-ui",
   "displayName": "Claude UI",
   "description": "有明确审美立场的前端 UI 构建指南：设计方向决策、排版、色彩、间距、组件状态、动效、暗色模式、中文排版与反 AI 味自检清单。",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": { "name": "齐天大圣123 & Claude Code", "url": "https://github.com/Atomorrow123" },
   "homepage": "https://github.com/Atomorrow123/Claude-ui",
   "repository": { "type": "git", "url": "https://github.com/Atomorrow123/Claude-ui" },

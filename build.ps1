@@ -27,9 +27,11 @@ New-Item -ItemType Directory $Dist | Out-Null
 $stage = Join-Path ([IO.Path]::GetTempPath()) ("claude-ui-build-" + [guid]::NewGuid())
 $pkg = Join-Path $stage 'claude-ui'
 New-Item -ItemType Directory -Force $pkg | Out-Null
-foreach ($item in '.claude-plugin','assets','skills','plugin.json','gemini-extension.json','install.ps1','install.sh','README.md','LICENSE') {
+foreach ($item in '.claude-plugin','skills','plugin.json','gemini-extension.json','install.ps1','install.sh','README.md','LICENSE') {
   Copy-Item -Recurse (Join-Path $Root $item) $pkg
 }
+New-Item -ItemType Directory -Force (Join-Path $pkg 'assets') | Out-Null
+Copy-Item (Join-Path $Root 'assets\logo.svg') (Join-Path $pkg 'assets\logo.svg')
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function New-Zip($srcDir, $zipPath) {

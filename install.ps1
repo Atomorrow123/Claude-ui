@@ -51,7 +51,8 @@ function Install-To([string]$dir, [string]$label, [bool]$asPlugin) {
     # Antigravity plugin bundle: manifest + logo + skills
     Copy-Item (Join-Path $Root 'plugin.json') $target
     Copy-Item (Join-Path $Root 'README.md')   $target -ErrorAction SilentlyContinue
-    Copy-Item -Recurse (Join-Path $Root 'assets') $target
+    New-Item -ItemType Directory -Force (Join-Path $target 'assets') | Out-Null
+    Copy-Item (Join-Path $Root 'assets\logo.svg') (Join-Path $target 'assets\logo.svg')
     New-Item -ItemType Directory -Force (Join-Path $target 'skills') | Out-Null
     Copy-Item -Recurse $Skill (Join-Path $target 'skills')
   } else {

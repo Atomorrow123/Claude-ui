@@ -55,7 +55,7 @@ install_to() { # dir label as_plugin
   rm -rf "$target"; mkdir -p "$target"
   if [[ "$3" == "1" ]]; then
     cp "$ROOT/plugin.json" "$target/"; cp "$ROOT/README.md" "$target/" 2>/dev/null || true
-    cp -R "$ROOT/assets" "$target/"; mkdir -p "$target/skills"; cp -R "$SKILL" "$target/skills/"
+    mkdir -p "$target/assets" "$target/skills"; cp "$ROOT/assets/logo.svg" "$target/assets/"; cp -R "$SKILL" "$target/skills/"
   else
     cp -R "$SKILL/." "$target/"
   fi

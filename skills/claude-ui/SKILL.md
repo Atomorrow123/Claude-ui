@@ -99,21 +99,12 @@ description: >-
 - **最多两种字体**：一个标题、一个正文（或同一家族不同字重）。等宽可作为第三种仅用于代码/数据。
 - 字体加载：`font-display: swap`，只加载用到的字重，优先可变字体。
 
-### 中文排版与防丢字回退规范（重要）
-- **无衬线字体栈顺序**：`"PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif`（务必把 `"Noto Sans SC"` 排在 `"Microsoft YaHei"` 前面，因为微软雅黑通常仅含 400/700 两档字重，排前面会吞掉 500/600 字重层级）。
-- **衬线字体栈顺序**：`"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif`（避免盲目将 `"Source Han Serif SC"` 写进回退链，因为许多 Windows 机器被第三方软件安装了残缺的单字重 `Source Han Serif SC Heavy`，一旦触发回退会导致个别字变成超粗黑体）。文艺感可用 霞鹜文楷 (`"LXGW WenKai"`).
-- **等宽字体栈必须补齐中文无衬线回退**：
-  ```css
-  --font-mono: "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
-  ```
-  西文等宽字体不含汉字，若不加中文无衬线回退，Windows 下 `ui-monospace` / `monospace` 会把其中的所有汉字强制回退为粗糙的点阵 `SimSun`（中易宋体）。同时：**`--font-mono` 仅用于纯英文/数字编号、代码或快捷键（`<kbd>`）**；对于含中文的角标、状态栏、表格数字带单位列（如 `64,000 字`、`30 册`、`无限制`），应保持 `--font-body` 并配合 `font-variant-numeric: tabular-nums`。
-- **表单与交互控件必须显式继承字体**：浏览器默认给 `<button>`、`<input>`、`<select>`、`<textarea>` 指定了系统控件字体（如 Windows 下的 `Arial`），不会继承 `body` 字体。全局重置必须包含：
-  ```css
-  button, input, select, textarea, optgroup { font: inherit; color: inherit; }
-  ```
-- **Google Fonts 中文字体加载防坑**：
-  1. **字重必须全覆盖**：若页面用到正文（400）、中等（500）、标题（600）与 `<strong>`（700），`<link>` 必须完整请求 `wght@400;500;600;700`（只引 `500;600` 会导致 `400` 段落或 `700` 粗体回退或伪粗体失真）。
-  2. **动态文案分片预热**：Google Fonts 将中文字体切分为 100+ 个 `unicode-range` 分片且不含 `local()`（会屏蔽本地同名完整字体）。若页面有 JS 动态切换的文案（如 Tab 切换、多步推演），必须在 HTML 底部放置 `<div class="sr-only" aria-hidden="true">` 挂载动态文本中的非常用字并同时应用 `--font-serif` 与 `--font-sans`（或调用 `document.fonts.load()`），防止点击切换时个别汉字因分片未加载而回退成宋体/默认体。
+### 中文排版（重要）
+- **字体栈**：
+  - 无衬线：`"PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, sans-serif`（`Noto Sans SC` 置于 `Microsoft YaHei` 前以保留 500/600 字重）。
+  - 衬线：`"Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif`；文艺感可用 霞鹜文楷 (`"LXGW WenKai"`)。
+  - 等宽：在 `monospace` 前补齐中文无衬线回退，防止等宽容器内的汉字在 Windows 下退化为点阵 `SimSun`；含中文单位的数字列优先用 `--font-body` + `tabular-nums`。
+- **控件继承与字重**：全局重置必加 `button, input, select, textarea { font: inherit; color: inherit; }`；引入 Webfont 时需覆盖实际使用的全部字重（如 `400;500;600;700`）。
 - 西文字体写在中文字体**前面**，让英文数字走西文字形：`font-family: "Inter", "PingFang SC", ...`
 - 中文正文行高 **1.7–1.8**（比西文更松）。
 - **不要给中文设置负字距**，不要用斜体（中文没有真斜体，伪斜体很丑）。
@@ -186,7 +177,8 @@ description: >-
 - **按钮文案用动词 + 宾语**："保存更改"、"创建项目"，不要"提交"、"确定"、"OK"。
 - **表单**：标签在上方，永远不要只用 placeholder 当标签；错误信息贴着字段、说清楚怎么改。
 - **图标**：用一套图标库（Lucide / Phosphor / Tabler），统一线宽（1.5 或 2）与尺寸（16 / 20 / 24），与文字垂直居中。**不要用 emoji 当 UI 图标。**
-- **卡片**：只在内容确实需要分组时使用；不要卡片套卡片套卡片。卡片顶栏（标题 + 徽标/快捷键）或横向步骤条等 Flex 容器必须加 `flex-wrap: wrap`，而 `.badge` / `<kbd>` / Tab 按钮必须使用 `min-height` + `line-height: 1.2–1.35` + `white-space: nowrap` + `flex-shrink: 0`，严禁固定高度组件被挤压折行导致文字冲出背景边框。
+- **卡片**：只在内容确实需要分组时使用；不要卡片套卡片套卡片。
+- **徽标与标签**：`.badge`、`<kbd>`、Tab 项使用 `min-height` + 紧凑行高 + `white-space: nowrap` + `flex-shrink: 0`；横向排列的 Flex 容器加 `flex-wrap: wrap`，防止挤压折行溢出。
 - **表格**：数字右对齐 + tabular-nums，文字左对齐；斑马纹或分隔线二选一；表头弱化（小号、次要色、可大写）。
 
 ---
@@ -254,9 +246,8 @@ description: >-
 **层级与排版**
 - [ ] 眯眼看（或模糊截图）：每屏能一眼找到唯一焦点吗？
 - [ ] 字号都来自阶梯？行宽 ≤ 75ch？正文 ≥ 16px（移动端）？
-- [ ] 字体 ≤ 2 种，字重 ≤ 3 档？
-- [ ] **无字体丢失或回退死角**：`button/input/select/textarea` 已设 `font: inherit`？`--font-mono` 已包含中文无衬线回退且未滥用于含中文的表格列/标签？Webfont 已加载全部使用字重（400/500/600/700）且 JS 动态切换文案已预热？
-- [ ] **无文字溢出容器边界**：`.badge`、`<kbd>`、Tab 等组件是否已用 `min-height` + `white-space: nowrap` + `flex-shrink: 0` + 紧凑 `line-height`？横向排列胶囊/标签的 Flex 容器是否已加 `flex-wrap: wrap`（没有任何文字被挤压成两行并冲出胶囊背景）？
+- [ ] 字体 ≤ 2 种，字重 ≤ 3 档？表单控件已继承字体、等宽栈含中文回退？
+- [ ] 胶囊徽标、快捷键、卡片顶栏无挤压折行或文字溢出边框？
 
 **色彩**
 - [ ] 强调色面积 ≤ 10%？只有一个 Primary 按钮？
