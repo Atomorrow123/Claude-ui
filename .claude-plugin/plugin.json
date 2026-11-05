@@ -1,6 +1,6 @@
 {
   "name": "claude-ui",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "An opinionated frontend UI building guide: design direction, typography, color, spacing, component states, motion, dark mode, CJK typography and an anti-AI-slop checklist.",
   "author": { "name": "齐天大圣123 & Claude Code", "url": "https://github.com/Atomorrow123" },
   "homepage": "https://github.com/Atomorrow123/Claude-ui",

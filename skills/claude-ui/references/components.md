@@ -132,6 +132,7 @@
 
 **要点**
 - 数字右对齐，文本左对齐，状态用徽标（Badge）而不是纯彩色文字。
+- **数字列 `.num` 不要滥用 `--font-mono`**：当单元格或表头含中文单位/文字（如 `64,000 字`、`30 册`、`无限制`、`手稿版 Draft`）时，用 `--font-body` + `font-variant-numeric: tabular-nums` 即可对齐数字；若直接设 `font-family: var(--font-mono)` 且等宽栈缺少中文回退，汉字在 Windows 下会退化为粗糙的 `SimSun` 宋体。
 - 行操作：hover 时显示或收进 "⋯" 菜单，减少视觉噪音。
 - 空表格显示空状态，加载中显示骨架行（3–5 行）。
 - 窄屏：横向滚动容器 + 首列 sticky，或转为卡片列表。
@@ -178,19 +179,31 @@ dialog::backdrop { background: oklch(0% 0 0 / 0.4); }
 
 ---
 
-## 徽标 Badge / 标签
+## 徽标 Badge / 标签与快捷键 Kbd
 
 ```css
 .badge {
   display: inline-flex; align-items: center; gap: var(--space-1);
-  height: 22px; padding: 0 var(--space-2);
+  min-height: 24px; padding: 2px var(--space-3);
   font-size: var(--text-xs); font-weight: var(--weight-medium);
+  line-height: 1.35; white-space: nowrap; flex-shrink: 0;
   border-radius: var(--radius-full);
   background: var(--surface-sunken); color: var(--text-secondary);
 }
 .badge--success { background: color-mix(in oklch, var(--success) 14%, transparent); color: var(--success); }
+
+kbd {
+  display: inline-flex; align-items: center;
+  padding: 2px 6px;
+  font: var(--weight-regular) var(--text-xs)/1.2 var(--font-mono);
+  white-space: nowrap; flex-shrink: 0;
+  border-radius: 4px;
+  background: var(--surface-sunken); border: 1px solid var(--border-strong); color: var(--text-secondary);
+}
 ```
 - 用浅底 + 深字，不要实心饱和底色（太吵）。可加 6px 圆点表示状态。
+- **严禁定高容器被挤压折行溢出**：`.badge`、`<kbd>`、Tab 切换项等小型胶囊/标签组件，**不要写死 `height`**（改用 `min-height` + 上下 `2px` 内边距），并必须同时声明 `line-height: 1.2–1.35`（防止继承正文 `1.75` 行高）、`white-space: nowrap` 与 `flex-shrink: 0`。
+- **承载徽标的 Flex 容器必须允许换行**：当卡片顶栏（如 `标题 + 徽标`、`标签 + 快捷键`）或流程图行（如 `徽标 → 徽标 → 徽标`）使用 `display: flex` 时，父容器必须加 `flex-wrap: wrap` 与合理 `gap`，让放不下的徽标整颗换到下一行，绝不能让徽标内部文字被横向挤压成两行而溢出胶囊背景。
 
 ---
 

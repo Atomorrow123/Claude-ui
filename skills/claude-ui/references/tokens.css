@@ -57,9 +57,9 @@
   --info:    oklch(55% 0.12 240);
 
   /* ---------- 3. 字体 ---------- */
-  --font-sans:  "Inter", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
-  --font-serif: "Source Serif 4", "Newsreader", "Noto Serif SC", "Source Han Serif SC", Georgia, serif;
-  --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --font-sans:  "Inter", "Geist", "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-serif: "Source Serif 4", "Newsreader", "Noto Serif SC", "Songti SC", "STSong", "SimSun", Georgia, serif;
+  --font-mono:  "Geist Mono", "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, "PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Source Han Sans SC", "Microsoft YaHei UI", "Microsoft YaHei", monospace;
 
   --font-display: var(--font-serif); /* 标题字体；瑞士/暗色精密方向改为 --font-sans */
   --font-body:    var(--font-sans);
@@ -163,6 +163,12 @@
 
 /* ---------- 基础重置与全局排版 ---------- */
 *, *::before, *::after { box-sizing: border-box; }
+
+/* 表单与交互控件默认不继承 body 字体（会退化为 Arial / 系统控件字体），必须显式继承 */
+button, input, select, textarea, optgroup {
+  font: inherit;
+  color: inherit;
+}
 
 html {
   -webkit-text-size-adjust: 100%;

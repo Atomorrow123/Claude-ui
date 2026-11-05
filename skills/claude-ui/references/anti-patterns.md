@@ -84,3 +84,24 @@
 ### 17. 加载闪烁与布局抖动
 **症状**：数据回来后内容跳动；spinner 一闪而过。
 ✅ 骨架屏占位并保持尺寸；图片设置 `width/height` 或 `aspect-ratio`；加载 < 300ms 不显示 loading。
+
+### 18. 部分文字字体丢失 / 退化为默认宋体或 Arial
+**症状**：页面中有些按钮文字变成了 `Arial`/微软雅黑；角标、状态栏、表格数字列里的汉字变成了粗糙发虚的 Windows `SimSun`（中易宋体）；或者同一句标题/引文里个别汉字跟周围字体粗细不一致。
+**问题**：
+1. `<button>` / `<input>` / `<select>` / `<textarea>` 默认使用浏览器 User-Agent 控件字体，不继承 `body` 的 `font-family`。
+2. `--font-mono` 只写了西文等宽字体（`JetBrains Mono, Geist Mono, monospace`），遇到中文时 `monospace` 在 Windows 上直接落到 `SimSun` 宋体。
+3. Google Fonts 引入中文字体时漏掉了页面用到的字重（如只引 `500;600` 却在段落/引文用 `400` 或 `<strong>` `700`），或 JS 动态切换的文案（Tab/步骤推演）包含初始 DOM 未出现的汉字分片，以及回退链中误写了被第三方软件装成单字重残缺包的 `"Source Han Serif SC"`。
+✅
+1. 全局重置必加 `button, input, select, textarea, optgroup { font: inherit; color: inherit; }`。
+2. `--font-mono` 必须在 `monospace` 之前补齐中文无衬线回退（`"PingFang SC", "HarmonyOS Sans SC", "Noto Sans SC", "Microsoft YaHei UI", "Microsoft YaHei"`），且含中文的表格数字列/标签优先用 `--font-body` + `tabular-nums`。
+3. Google Fonts 中文字体完整引入 `wght@400;500;600;700`，对 JS 动态切换文本做隐藏 DOM 预热或 `document.fonts.load()`。
+
+### 19. 胶囊徽标 / 快捷键 / 卡片顶栏文字超出容器边界
+**症状**：胶囊徽标（`.badge`）、快捷键（`<kbd>`）或分段 Tab 里的中文末尾一两个字折到了第二行，上下直接冲出胶囊背景边框；或者卡片顶栏“标题 + 徽标”挤在一起双双折行。
+**问题**：
+1. 给 `.badge` 写了固定 `height: 22px/24px`，却没写 `white-space: nowrap`、`flex-shrink: 0` 和紧凑 `line-height`（直接继承了 `body` 的 `1.75` 行高）。
+2. 父级 Flex 容器（如 `.citation-node`、`.plan-card__top`、`.sidebar-card__header`）未设置 `flex-wrap: wrap`，当空间差十几像素时，Flexbox 默认横向压缩子项宽度，把徽标内的文字挤成两行（高约 `36px`），彻底撑破 `24px` 的胶囊高度。
+✅
+1. 所有胶囊徽标（`.badge`）、快捷键（`<kbd>`）、Tab 按钮统一使用 `min-height` 代替死锁的 `height`，并必加 `line-height: 1.2–1.35; white-space: nowrap; flex-shrink: 0;`。
+2. 所有横向排列徽标、状态标签或“标题 + 徽标”的 Flex 容器，必须声明 `flex-wrap: wrap` 与适度 `gap`，空间不足时整颗胶囊换行，绝不挤压内部文字。
+3. 大字号展示数字（如定价金额 `--text-3xl`、统计指标 `--text-xl`）若使用 `<span>` 而非 `<h1-h4>`，必须显式设置 `line-height: 1.1–1.2`，避免继承正文 `1.75` 行高导致行盒虚高。
