@@ -12,6 +12,13 @@
   作者：齐天大圣123 &amp; Claude Code
 </p>
 
+<p align="center">
+  <img src="assets/showcase-folio.jpg" width="100%" alt="Claude UI 构建效果预览：墨迹 Folio 深度写作工作台">
+</p>
+<p align="center">
+  <sub>▲ 使用 Claude UI（默认方向 A · Warm Editorial Minimal）直出的真实中文产品落地页效果</sub>
+</p>
+
 ---
 
 ## 这是什么
@@ -28,7 +35,7 @@ Claude UI 是一个 [Agent Skill](https://agentskills.io)（`SKILL.md` 标准格
 | `references/tokens.css` | OKLCH 设计 token 模板（亮/暗模式、Tailwind v4 映射） |
 | `references/aesthetic-directions.md` | 6 种审美方向：Claude 原生、编辑排版、瑞士极简、暗色精密、柔和亲和、新粗野主义 |
 | `references/components.md` | 按钮、表单、卡片、导航、表格、弹窗、Toast、空状态等组件配方 |
-| `references/anti-patterns.md` | 17 条"AI 味"反模式及替代方案 |
+| `references/anti-patterns.md` | 19 条"AI 味"与中英混排常见反模式及替代方案 |
 
 ---
 
@@ -132,7 +139,9 @@ claude-ui/
 │   └── marketplace.json     # Claude Code 自托管市场
 ├── plugin.json              # Antigravity 插件清单
 ├── gemini-extension.json    # Gemini CLI 扩展清单
-├── assets/logo.svg
+├── assets/
+│   ├── logo.svg
+│   └── showcase-folio.jpg   # 首页构建效果展示图
 ├── skills/claude-ui/        # ← 技能本体（唯一事实来源）
 │   ├── SKILL.md
 │   └── references/
